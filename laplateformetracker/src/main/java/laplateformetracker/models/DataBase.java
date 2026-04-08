@@ -31,16 +31,19 @@ public class DataBase {
         } 
     }
 
-    public ArrayList<ArrayList<String>> runRequest(String request, Integer column_number) {
+    public ArrayList<ArrayList<String>> runRequest(String request) {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
 
         try {
         Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery(request);
+
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int columnCount = rsmd.getColumnCount();
         
         while (rs.next()) {
             ArrayList<String> line = new ArrayList<>();
-            for (int i = 1 ; i <= column_number ; i++) {
+            for (int i = 1 ; i <= columnCount ; i++) {
                 line.add(rs.getString(i));
             }
             result.add(line);

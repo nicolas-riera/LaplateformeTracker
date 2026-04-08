@@ -23,7 +23,7 @@ public class App extends Application {
 
         DataBase database = new DataBase();
 
-        System.out.println(database.runRequest("SELECT * FROM student", 10));
+        System.out.println(database.runRequest("SELECT * FROM student"));
 
     }
 
