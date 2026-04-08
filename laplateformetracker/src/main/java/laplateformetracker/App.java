@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import io.github.cdimascio.dotenv.Dotenv;
 
 /**
  * JavaFX App
@@ -32,6 +33,10 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        Dotenv dotenv = Dotenv.load();
+
+		System.out.println(dotenv.get("USER"));
+
         launch();
     }
 
