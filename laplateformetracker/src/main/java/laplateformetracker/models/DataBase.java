@@ -36,20 +36,25 @@ public class DataBase {
 
         try {
         Statement st = conn.createStatement();
-        ResultSet rs = st.executeQuery(request);
 
-        ResultSetMetaData rsmd = rs.getMetaData();
-        int columnCount = rsmd.getColumnCount();
+        boolean isResultSet = st.execute(request);
+
+        if (isResultSet) {
+
+            ResultSet rs = st.getResultSet();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
         
-        while (rs.next()) {
-            ArrayList<String> line = new ArrayList<>();
-            for (int i = 1 ; i <= columnCount ; i++) {
-                line.add(rs.getString(i));
+            while (rs.next()) {
+                ArrayList<String> line = new ArrayList<>();
+                for (int i = 1 ; i <= columnCount ; i++) {
+                    line.add(rs.getString(i));
+                }
+                result.add(line);
+            
             }
-            result.add(line);
-
+            rs.close();
         }
-        rs.close();
         st.close();
         } catch (SQLException e) {
             System.out.println("Erreur SQL : " + e.getMessage());

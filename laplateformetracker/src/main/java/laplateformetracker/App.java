@@ -24,7 +24,7 @@ public class App extends Application {
         DataBase database = new DataBase();
 
         System.out.println(database.runRequest("SELECT * FROM student"));
-
+        
     }
 
     static void setRoot(String fxml) throws IOException {
