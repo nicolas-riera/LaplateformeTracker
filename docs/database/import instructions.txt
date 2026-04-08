@@ -1,0 +1,7 @@
+1. Create database:
+
+CREATE DATABASE laplateforme_tracker;
+
+2. Import laplateforme_tracker.sql file:
+
+psql -U postgres -d laplateforme_tracker < laplateforme_tracker.sql
