@@ -1,15 +1,12 @@
 package laplateformetracker;
 
-import java.sql.*;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import laplateformetracker.models.DataBase;
 import java.io.IOException;
-import io.github.cdimascio.dotenv.Dotenv;
 
 /**
  * JavaFX App
@@ -23,6 +20,11 @@ public class App extends Application {
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setScene(scene);
         stage.show();
+
+        DataBase database = new DataBase();
+
+        System.out.println(database.runRequest("SELECT * FROM student", 10));
+
     }
 
     static void setRoot(String fxml) throws IOException {
@@ -33,13 +35,4 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
-
-    public static void main(String[] args) {
-        Dotenv dotenv = Dotenv.load();
-
-		System.out.println(dotenv.get("USER"));
-
-        launch();
-    }
-
 }
