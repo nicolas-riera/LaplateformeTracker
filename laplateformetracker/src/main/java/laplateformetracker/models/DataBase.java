@@ -31,17 +31,21 @@ public class DataBase {
         } 
     }
 
-    public ArrayList<ArrayList<String>> runRequest(String request) {
+    public ArrayList<ArrayList<String>> runRequest(String request, Object... params) {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
 
         try {
-        Statement st = conn.createStatement();
+        PreparedStatement pst = conn.prepareStatement(request);
 
-        boolean isResultSet = st.execute(request);
+        for (int i = 0; i < params.length; i++) {
+            pst.setObject(i + 1, params[i]);
+        }   
+
+        boolean isResultSet = pst.execute(request);
 
         if (isResultSet) {
 
-            ResultSet rs = st.getResultSet();
+            ResultSet rs = pst.getResultSet();
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
         
@@ -55,7 +59,7 @@ public class DataBase {
             }
             rs.close();
         }
-        st.close();
+        pst.close();
         } catch (SQLException e) {
             System.out.println("Erreur SQL : " + e.getMessage());
             System.out.println("Code d'état : " + e.getSQLState());
