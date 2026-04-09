@@ -1,4 +1,4 @@
-package laplateformetracker.controllers;
+package laplateformetracker.controllers.login;
 
 import javafx.stage.Stage;
 import laplateformetracker.models.DataBase;
@@ -12,4 +12,5 @@ public class LoginController {
 
         LoginView.view(stage);
     }
+    
 }

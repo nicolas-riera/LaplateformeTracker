@@ -3,7 +3,7 @@ package laplateformetracker;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import java.io.IOException;
-import laplateformetracker.controllers.*;
+import laplateformetracker.controllers.login.LoginController;
 
 public class App extends Application {
 
