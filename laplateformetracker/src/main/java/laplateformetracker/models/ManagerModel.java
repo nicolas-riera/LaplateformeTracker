@@ -2,8 +2,6 @@ package laplateformetracker.models;
 
 import java.util.ArrayList;
 
-import javafx.scene.chart.PieChart.Data;
-
 public class ManagerModel {
     public void create(String email, String password, String firstName, String lastName, DataBase database) {
         String request = "INSERT INTO manager (email, password, first_name, last_name) VALUES (?, ?, ?, ?)";
