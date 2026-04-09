@@ -34,7 +34,11 @@ public class DataBase {
     public ArrayList<ArrayList<String>> runRequest(String request, Object... params) {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
 
-        // On utilise un try-with-resources pour fermer automatiquement le PreparedStatement
+        if (this.conn == null) {
+        System.out.println("Erreur : La connexion à la base de données n'est pas établie.");
+        return result;
+        }
+
     try (PreparedStatement pst = conn.prepareStatement(request)) {
 
         if (params != null) {
@@ -63,9 +67,20 @@ public class DataBase {
     } catch (SQLException e) {
             System.out.println("Erreur SQL : " + e.getMessage());
             System.out.println("Code d'état : " + e.getSQLState());
+            System.out.println("Requête : " + request);
         } catch (java.lang.NullPointerException e) {
             System.out.println("Le pointeur est nul.");
         }
         return result;
+    }
+
+    public void close() {
+    try {
+        if (this.conn != null && !this.conn.isClosed()) {
+            this.conn.close();
+        }
+    } catch (SQLException e) {
+        System.out.println("Erreur lors de la fermeture : " + e.getMessage());
+    }
     }
 }
