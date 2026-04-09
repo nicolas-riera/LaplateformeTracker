@@ -8,8 +8,8 @@ public class ManagerModel {
         database.runRequest(request, email, password, firstName, lastName);
     }
 
-    public void update(int id, String column, String data, DataBase database) {
-        String request = "UPDATE manager SET ? = ?  WHERE id = ?";
+    public void update(int id, String column, Object data, DataBase database) {
+        String request = "UPDATE manager SET " + column + " = ?  WHERE id = ?";
         database.runRequest(request, column, data, id);
     }
 
