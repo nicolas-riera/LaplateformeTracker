@@ -34,33 +34,33 @@ public class DataBase {
     public ArrayList<ArrayList<String>> runRequest(String request, Object... params) {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
 
-        try {
-        PreparedStatement pst = conn.prepareStatement(request);
+        // On utilise un try-with-resources pour fermer automatiquement le PreparedStatement
+    try (PreparedStatement pst = conn.prepareStatement(request)) {
 
-        for (int i = 0; i < params.length; i++) {
-            pst.setObject(i + 1, params[i]);
-        }   
+        if (params != null) {
+            for (int i = 0; i < params.length; i++) {
+                pst.setObject(i + 1, params[i]);
+            }
+        }
 
-        boolean isResultSet = pst.execute(request);
+        boolean isResultSet = pst.execute(); 
 
         if (isResultSet) {
+            try (ResultSet rs = pst.getResultSet()) {
+                ResultSetMetaData rsmd = rs.getMetaData();
+                int columnCount = rsmd.getColumnCount();
 
-            ResultSet rs = pst.getResultSet();
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-        
-            while (rs.next()) {
-                ArrayList<String> line = new ArrayList<>();
-                for (int i = 1 ; i <= columnCount ; i++) {
-                    line.add(rs.getString(i));
+                while (rs.next()) {
+                    ArrayList<String> line = new ArrayList<>();
+                    for (int i = 1; i <= columnCount; i++) {
+                        Object value = rs.getObject(i);
+                        line.add(value != null ? value.toString() : "null");
+                    }
+                    result.add(line);
                 }
-                result.add(line);
-            
             }
-            rs.close();
         }
-        pst.close();
-        } catch (SQLException e) {
+    } catch (SQLException e) {
             System.out.println("Erreur SQL : " + e.getMessage());
             System.out.println("Code d'état : " + e.getSQLState());
         } catch (java.lang.NullPointerException e) {
