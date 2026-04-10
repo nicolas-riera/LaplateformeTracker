@@ -7,6 +7,7 @@ import laplateformetracker.models.DataBase;
 import laplateformetracker.models.ManagerModel;
 import laplateformetracker.models.StudentModel;
 import laplateformetracker.views.LoginView;
+import laplateformetracker.views.popup.ChangePasswordPopupView;
 
 import java.util.ArrayList;
 
@@ -15,14 +16,20 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 public class LoginController {
     private LoginView loginview;
     private DataBase database;
+    private Stage stage;
 
     public LoginController(Stage stage) throws java.io.IOException {
 
-         this.database = new DataBase();
+        this.stage = stage;
+        this.database = new DataBase();
 
-        this.loginview = new LoginView(stage);
+        this.loginview = new LoginView(this.stage);
         this.loginview.getFxmlController().setOnLoginButtonCallback((user, pass) -> {
-            loginUser(user, pass);
+            try {
+                loginUser(user, pass);
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
         }
         );
         Rectangle r = new Rectangle(25,25,250,250);
@@ -44,7 +51,7 @@ public class LoginController {
         }
     }
 
-    public void loginUser(String email, String password) {
+    public void loginUser(String email, String password) throws java.io.IOException{
         Integer manager_id = ManagerModel.getID(email, database);
         Integer student_id = StudentModel.getID(email, database);
         if (manager_id != -1) {
@@ -52,6 +59,7 @@ public class LoginController {
             String db_password = user_infos.get(0).get(2);
             if (!(db_password != null && db_password.trim().isEmpty())) {
                 System.out.println("Appel de la fenetre de changement de mot de passe.");
+                ChangePasswordPopupView changePasswordPopupView = new ChangePasswordPopupView(this.stage);
             }  else if (checkPassword(password, user_infos.get(0).get(2))) {
                 System.out.println("Instanciation de manager.");
             } else {
