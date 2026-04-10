@@ -4,6 +4,7 @@ module laplateformetracker {
     requires javafx.fxml;
     requires io.github.cdimascio.dotenv.java;
     requires java.sql;
+    requires bcrypt;
 
     opens laplateformetracker to javafx.fxml;
     exports laplateformetracker;
