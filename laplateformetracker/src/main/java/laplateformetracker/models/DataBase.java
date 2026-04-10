@@ -31,37 +31,56 @@ public class DataBase {
         } 
     }
 
-    public ArrayList<ArrayList<String>> runRequest(String request) {
+    public ArrayList<ArrayList<String>> runRequest(String request, Object... params) {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
 
-        try {
-        Statement st = conn.createStatement();
+        if (this.conn == null) {
+        System.out.println("Erreur : La connexion à la base de données n'est pas établie.");
+        return result;
+        }
 
-        boolean isResultSet = st.execute(request);
+    try (PreparedStatement pst = conn.prepareStatement(request)) {
+
+        if (params != null) {
+            for (int i = 0; i < params.length; i++) {
+                pst.setObject(i + 1, params[i]);
+            }
+        }
+
+        boolean isResultSet = pst.execute(); 
 
         if (isResultSet) {
+            try (ResultSet rs = pst.getResultSet()) {
+                ResultSetMetaData rsmd = rs.getMetaData();
+                int columnCount = rsmd.getColumnCount();
 
-            ResultSet rs = st.getResultSet();
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-        
-            while (rs.next()) {
-                ArrayList<String> line = new ArrayList<>();
-                for (int i = 1 ; i <= columnCount ; i++) {
-                    line.add(rs.getString(i));
+                while (rs.next()) {
+                    ArrayList<String> line = new ArrayList<>();
+                    for (int i = 1; i <= columnCount; i++) {
+                        Object value = rs.getObject(i);
+                        line.add(value != null ? value.toString() : "null");
+                    }
+                    result.add(line);
                 }
-                result.add(line);
-            
             }
-            rs.close();
         }
-        st.close();
-        } catch (SQLException e) {
+    } catch (SQLException e) {
             System.out.println("Erreur SQL : " + e.getMessage());
             System.out.println("Code d'état : " + e.getSQLState());
+            System.out.println("Requête : " + request);
         } catch (java.lang.NullPointerException e) {
             System.out.println("Le pointeur est nul.");
         }
         return result;
+    }
+
+    public void close() {
+    try {
+        if (this.conn != null && !this.conn.isClosed()) {
+            this.conn.close();
+        }
+    } catch (SQLException e) {
+        System.out.println("Erreur lors de la fermeture : " + e.getMessage());
+    }
     }
 }
