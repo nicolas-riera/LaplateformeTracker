@@ -22,7 +22,7 @@ public class LoginController {
 
         this.loginview = new LoginView(stage);
         this.loginview.getFxmlController().setOnLoginButtonCallback((user, pass) -> {
-
+            loginUser(user, pass);
         }
         );
         Rectangle r = new Rectangle(25,25,250,250);
@@ -47,15 +47,15 @@ public class LoginController {
     public void loginUser(String email, String password) {
         Integer manager_id = ManagerModel.getID(email, database);
         Integer student_id = StudentModel.getID(email, database);
-
         if (manager_id != -1) {
             ArrayList<ArrayList<String>> user_infos = ManagerModel.getInfos(manager_id, database);
-            if (user_infos.get(0).get(2) == null || user_infos.get(0).get(2).isEmpty()) {
-                // Process password creation
+            String db_password = user_infos.get(0).get(2);
+            if (!(db_password != null && db_password.trim().isEmpty())) {
+                System.out.println("Appel de la fenetre de changement de mot de passe.");
             }  else if (checkPassword(password, user_infos.get(0).get(2))) {
-                // Instantiate Manager
+                System.out.println("Instanciation de manager.");
             } else {
-                // Message "Email ou mot de passe incorrect."
+                System.out.println("Email ou mot de passe incorrect.");
             }
         } else if (student_id != -1) {
             ArrayList<ArrayList<String>> user_infos = StudentModel.getInfos(student_id, database);
