@@ -48,6 +48,8 @@ public class ModelsTest {
 
         ArrayList<ArrayList<String>> info = ManagerModel.getInfos(id, database);
 
+        System.out.println(info);
+
         assertEquals("test2@test.com", info.get(0).get(1));
 
         ManagerModel.delete(id, database);
