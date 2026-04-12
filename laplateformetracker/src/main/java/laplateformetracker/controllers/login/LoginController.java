@@ -58,15 +58,13 @@ public class LoginController {
             ArrayList<ArrayList<String>> user_infos = ManagerModel.getInfos(manager_id, database);
             String db_password = user_infos.get(0).get(2);
             if (!(db_password != null && db_password.trim().isEmpty())) {
-                System.out.println("Appel de la fenetre de changement de mot de passe.");
                 ChangePasswordPopupView changePasswordPopupView = new ChangePasswordPopupView(this.stage);
-                changePasswordPopupView.getFxmlController().setOnConfirmButtonCallback((newPassword, confirmationPassword) -> {
+                changePasswordPopupView.getFxmlController().setOnConfirmButtonCallback((newPassword) -> {
                     System.out.println(newPassword);
-                    System.out.println(confirmationPassword);
                     changePasswordPopupView.close();
                 });
             }  else if (checkPassword(password, user_infos.get(0).get(2))) {
-                System.out.println("Instanciation de manager.");
+                System.out.println("Instantiation de manager.");
             } else {
                 System.out.println("Email ou mot de passe incorrect.");
             }
