@@ -8,20 +8,29 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
 public class ChangePasswordPopupView {
 
     private ChangePasswordPopupFXMLController changePasswordPopupFXMLController;
     public javafx.scene.Parent root;
+    private Stage dialog;
 
     public ChangePasswordPopupView(Stage primaryStage) throws java.io.IOException {
-        Stage dialog = new Stage();
+        this.dialog = new Stage();
         FXMLLoader loader = new FXMLLoader(ChangePasswordPopupView.class.getResource("/changePasswordPopup.fxml"));
         this.root = loader.load();
-        dialog.initModality(Modality.NONE);
-        dialog.initOwner(primaryStage);
+        this.dialog.initModality(Modality.NONE);
+        this.dialog.initOwner(primaryStage);
         Scene dialogScene = new Scene(root, 600, 230);
-        dialog.setScene(dialogScene);
-        dialog.show();
+        this.changePasswordPopupFXMLController = loader.getController();
+        this.dialog.setScene(dialogScene);
+        this.dialog.show();
+    }
+
+    public ChangePasswordPopupFXMLController getFxmlController() {
+        return changePasswordPopupFXMLController;
+    }
+
+    public void close(){
+        this.dialog.close();
     }
 }

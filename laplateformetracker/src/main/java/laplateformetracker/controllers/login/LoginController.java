@@ -60,6 +60,11 @@ public class LoginController {
             if (!(db_password != null && db_password.trim().isEmpty())) {
                 System.out.println("Appel de la fenetre de changement de mot de passe.");
                 ChangePasswordPopupView changePasswordPopupView = new ChangePasswordPopupView(this.stage);
+                changePasswordPopupView.getFxmlController().setOnConfirmButtonCallback((newPassword, confirmationPassword) -> {
+                    System.out.println(newPassword);
+                    System.out.println(confirmationPassword);
+                    changePasswordPopupView.close();
+                });
             }  else if (checkPassword(password, user_infos.get(0).get(2))) {
                 System.out.println("Instanciation de manager.");
             } else {
@@ -70,10 +75,10 @@ public class LoginController {
             if (checkPassword(password, user_infos.get(0).get(2))) {
                 // Instantiate Student ?
             } else {
-                // Message "Email ou mot de passe incorrect."
+                System.out.println("Email ou mot de passe incorrect.");
             }
         } else {
-            // Message "Email ou mot de passe incorrect."
+            System.out.println("Email ou mot de passe incorrect.");
         }
     }
 }
