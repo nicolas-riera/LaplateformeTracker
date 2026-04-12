@@ -38,9 +38,9 @@ public class LoginController {
         
     }
 
-    // public String hashPassword(String password) {
-    //     return BCrypt.withDefaults().hashToString(12, password.toCharArray());
-    // }
+    private String hashPassword(String password) {
+         return BCrypt.withDefaults().hashToString(12, password.toCharArray());
+    }
 
     public Boolean checkPassword(String password, String stored_password) {
         if (password.isEmpty()) {
@@ -60,11 +60,15 @@ public class LoginController {
             if (!(db_password != null && db_password.trim().isEmpty())) {
                 ChangePasswordPopupView changePasswordPopupView = new ChangePasswordPopupView(this.stage);
                 changePasswordPopupView.getFxmlController().setOnConfirmButtonCallback((newPassword) -> {
-                    System.out.println(newPassword);
+                    ManagerModel.update(manager_id, "password_hash", this.hashPassword(newPassword), database);
+                    System.out.println(ManagerModel.getInfos(manager_id, database));
                     changePasswordPopupView.close();
+                    System.out.println("Instantiation de manager.");
+                    System.out.println("Instantiation de mainMenuController.");
                 });
             }  else if (checkPassword(password, user_infos.get(0).get(2))) {
                 System.out.println("Instantiation de manager.");
+                System.out.println("Instantiation de mainMenuController.");
             } else {
                 System.out.println("Email ou mot de passe incorrect.");
             }
