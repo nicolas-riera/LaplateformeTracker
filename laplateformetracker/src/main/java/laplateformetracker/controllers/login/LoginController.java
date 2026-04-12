@@ -32,9 +32,9 @@ public class LoginController {
             }
         }
         );
-        Rectangle r = new Rectangle(25,25,250,250);
-        r.setFill(Color.BLUE);
-        this.loginview.addComponent(r);
+        //Rectangle r = new Rectangle(25,25,250,250);
+        //r.setFill(Color.BLUE);
+        //this.loginview.addComponent(r);
         
     }
 

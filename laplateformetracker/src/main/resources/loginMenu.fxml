@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="laplateformetracker.controllers.login.LoginFXMLController">
-  <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <children>
-            <Pane layoutX="20.0" layoutY="4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
-               <children>
-                    <Label layoutX="243.0" layoutY="14.0" text="Connexion">
-                        <font>
-                            <Font size="24.0" />
-                        </font>
-                    </Label>
-                    <TextField fx:id="userField" layoutX="225.0" layoutY="175.0" />
-                    <PasswordField fx:id="passwordField" layoutX="225.0" layoutY="224.0" />
-                    <Button fx:id="loginButton" layoutX="258.0" layoutY="269.0" mnemonicParsing="false" text="Se connecter" onAction="#handleLoginButtonAction"/>
-                  
-                </children>
-            </Pane>
-      </children>
-    </AnchorPane>
-  </children>
-</VBox>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="laplateformetracker.controllers.login.LoginFXMLController">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="526.8571123395648" minWidth="10.0" prefWidth="470.85720389229914" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="420.7142639160156" minWidth="10.0" prefWidth="337.14279610770086" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="525.1428658621651" minWidth="10.0" prefWidth="472.57139369419633" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="175.14286150251115" minHeight="10.0" prefHeight="38.57141985212053" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="346.0000087193081" minHeight="10.0" prefHeight="52.571480887276806" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="415.99994768415183" minHeight="10.0" prefHeight="415.99994768415183" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label text="Connexion" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="userField" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+      <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets top="20.0" />
+         </GridPane.margin>
+      </PasswordField>
+      <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLoginButtonAction" text="Se connecter" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+   </children>
+</GridPane>
