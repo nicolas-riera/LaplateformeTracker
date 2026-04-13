@@ -92,17 +92,23 @@ public class LoginController {
             }  else if (checkPassword(password, user_infos.get(0).get(2))) {
                 this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
             } else {
-                System.out.println("Email ou mot de passe incorrect.");
+                alert.setAlertType(AlertType.WARNING);
+                alert.setContentText("Email ou mot de passe incorrect.");
+                alert.show();
             }
         } else if (student_id != -1) {
             ArrayList<ArrayList<String>> user_infos = StudentModel.getInfos(student_id, database);
             if (checkPassword(password, user_infos.get(0).get(2))) {
                 // Instantiate Student ?
             } else {
-                System.out.println("Email ou mot de passe incorrect.");
+                alert.setAlertType(AlertType.WARNING);
+                alert.setContentText("Email ou mot de passe incorrect.");
+                alert.show();
             }
         } else {
-            System.out.println("Email ou mot de passe incorrect.");
+            alert.setAlertType(AlertType.WARNING);
+            alert.setContentText("Email ou mot de passe incorrect.");
+            alert.show();
         }
     }
 }
