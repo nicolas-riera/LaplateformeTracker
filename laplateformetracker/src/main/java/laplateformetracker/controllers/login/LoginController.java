@@ -1,7 +1,5 @@
 package laplateformetracker.controllers.login;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import laplateformetracker.models.DataBase;
 import laplateformetracker.models.ManagerModel;
@@ -21,6 +19,7 @@ public class LoginController {
     public LoginController(Stage stage) throws java.io.IOException {
 
         this.stage = stage;
+        this.stage.setTitle("LaPlateforme Tracker");;
         this.database = new DataBase();
 
         this.loginview = new LoginView(this.stage);
