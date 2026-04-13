@@ -8,6 +8,7 @@ import laplateformetracker.models.ManagerModel;
 import laplateformetracker.models.StudentModel;
 import laplateformetracker.views.LoginView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
+import laplateformetracker.User;
 
 import java.util.ArrayList;
 
@@ -51,9 +52,24 @@ public class LoginController {
         }
     }
 
+    private User instantiateUser(DataBase database, Integer id, ArrayList<ArrayList<String>> user_infos, boolean isManager){
+        User user = new User(database,
+                             id,
+                             user_infos.get(0).get(1),
+                             user_infos.get(0).get(3),
+                             user_infos.get(0).get(4),
+                             isManager);
+        return user;
+    }
+
+    private void instantiateMainMenu(User user){
+
+    }
+
     public void loginUser(String email, String password) throws java.io.IOException{
         Integer manager_id = ManagerModel.getID(email, database);
         Integer student_id = StudentModel.getID(email, database);
+       
         if (manager_id != -1) {
             ArrayList<ArrayList<String>> user_infos = ManagerModel.getInfos(manager_id, database);
             String db_password = user_infos.get(0).get(2);
@@ -63,12 +79,10 @@ public class LoginController {
                     ManagerModel.update(manager_id, "password_hash", this.hashPassword(newPassword), database);
                     System.out.println(ManagerModel.getInfos(manager_id, database));
                     changePasswordPopupView.close();
-                    System.out.println("Instantiation de manager.");
-                    System.out.println("Instantiation de mainMenuController.");
                 });
+                this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
             }  else if (checkPassword(password, user_infos.get(0).get(2))) {
-                System.out.println("Instantiation de manager.");
-                System.out.println("Instantiation de mainMenuController.");
+                this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
             } else {
                 System.out.println("Email ou mot de passe incorrect.");
             }

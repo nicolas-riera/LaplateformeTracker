@@ -3,14 +3,14 @@ import laplateformetracker.models.DataBase;
 
 public class User {
     private DataBase database;
-    private String id;
+    private Integer id;
     private String email;
     private String firstName;
     private String lastName;
     private Boolean isManager;
 
     public User(DataBase database,
-                String id,
+                Integer id,
                 String email,
                 String firstName,
                 String lastName,
@@ -21,13 +21,14 @@ public class User {
                     this.email = email;
                     this.firstName = firstName;
                     this.lastName = lastName;
+                    this.isManager = isManager;
                 }
 
     public DataBase getDatabase(){
         return this.database;
     }
 
-    public String getId(){
+    public Integer getId(){
         return this.id;
     }
 
