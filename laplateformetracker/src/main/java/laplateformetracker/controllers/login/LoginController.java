@@ -9,6 +9,7 @@ import laplateformetracker.models.StudentModel;
 import laplateformetracker.views.LoginView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
 import laplateformetracker.User;
+import laplateformetracker.controllers.mainMenu.MainMenuController;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,8 @@ public class LoginController {
     private LoginView loginview;
     private DataBase database;
     private Stage stage;
+    private User user;
+    private MainMenuController mainMenuController;
 
     public LoginController(Stage stage) throws java.io.IOException {
 
@@ -54,20 +57,20 @@ public class LoginController {
     }
 
     private User instantiateUser(DataBase database, Integer id, ArrayList<ArrayList<String>> user_infos, boolean isManager){
-        User user = new User(database,
+        this.user = new User(database,
                              id,
                              user_infos.get(0).get(1),
                              user_infos.get(0).get(3),
                              user_infos.get(0).get(4),
                              isManager);
-        return user;
+        return this.user;
     }
 
-    private void instantiateMainMenu(User user){
-
+    private void instantiateMainMenu(User user) throws java.io.IOException {
+        this.mainMenuController =  new MainMenuController(this.stage, user);
     }
 
-    public void loginUser(String email, String password) throws java.io.IOException{
+    public void loginUser(String email, String password) throws java.io.IOException {
         Integer manager_id = ManagerModel.getID(email, database);
         Integer student_id = StudentModel.getID(email, database);
         Alert alert = new Alert(AlertType.NONE);
@@ -83,11 +86,19 @@ public class LoginController {
                         alert.setAlertType(AlertType.INFORMATION);
                         alert.setContentText("Mot de passe validé et enregistré.");
                         alert.show();
-                        this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
+                        try {
+                            this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
+                        } catch (java.io.IOException e) {
+                        
+                        }
                     }
                     changePasswordPopupView.close();
+                    try {
+                        this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
+                    } catch (java.io.IOException e) {
+                        
+                    }
                 });
-                
                 
             }  else if (checkPassword(password, user_infos.get(0).get(2))) {
                 this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
