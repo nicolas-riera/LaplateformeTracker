@@ -36,12 +36,32 @@ public class ChangePasswordPopupFXMLController {
                        + "(?=.*[-+_!@#$%^&*., ?]).+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(newPassword);
+        
+        Alert alert = new Alert(AlertType.NONE);
 
-        if (newPassword.equals(confirmationPassword) && 
-            newPassword.length() > 15 && 
-            matcher.matches()){
-            return true;
+        if (newPassword.equals(confirmationPassword)){
+            if (newPassword.length() > 15){
+                if (matcher.matches()){
+                    alert.setAlertType(AlertType.CONFIRMATION);
+                    alert.setContentText("Mot de passe validé et enregistré.");
+                    alert.show();
+                    return true;
+                } else{
+                    alert.setAlertType(AlertType.WARNING);
+                    alert.setContentText("Il manque au moins 1 maj, 1 min, 1 chiffre et 1 caractère spécial.");
+                    alert.show();
+                    return false;
+                }
+            } else{
+                alert.setAlertType(AlertType.WARNING);
+                alert.setContentText("Le mot de passe doit faire au moins 15 caractères.");
+                alert.show();
+                return false;
+            }
         } else{
+            alert.setAlertType(AlertType.WARNING);
+            alert.setContentText("Les mots de passes ne correspondent pas.");
+            alert.show();
             return false;
         }
     }
@@ -51,17 +71,9 @@ public class ChangePasswordPopupFXMLController {
         if(onConfirmButtonCallback != null){
             String newPassword = passwordField.getText();
             String confirmationPassword = confirmationPasswordField.getText();
-            Alert alert = new Alert(AlertType.NONE);
             if(this.validatePassword(newPassword, confirmationPassword)){    
-                alert.setAlertType(AlertType.CONFIRMATION);
-                alert.setContentText("Mot de passe validé et enregistré.");
                 onConfirmButtonCallback.accept(newPassword);
             }
-            else {
-                alert.setAlertType(AlertType.ERROR);
-                alert.setContentText("Mots de passes invalides.");
-            }
-            alert.show();
         }
     }
 }
