@@ -42,9 +42,6 @@ public class ChangePasswordPopupFXMLController {
         if (newPassword.equals(confirmationPassword)){
             if (newPassword.length() > 15){
                 if (matcher.matches()){
-                    alert.setAlertType(AlertType.CONFIRMATION);
-                    alert.setContentText("Mot de passe validé et enregistré.");
-                    alert.show();
                     return true;
                 } else{
                     alert.setAlertType(AlertType.WARNING);
