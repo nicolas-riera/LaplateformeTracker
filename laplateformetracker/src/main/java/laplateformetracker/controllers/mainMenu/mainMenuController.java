@@ -15,6 +15,6 @@ public class MainMenuController {
         this.stage = stage;
         this.user = user;
 
-        this.mainmenuview = new MainMenuView(stage);
+        this.mainmenuview = new MainMenuView(stage, user);
     }
 }

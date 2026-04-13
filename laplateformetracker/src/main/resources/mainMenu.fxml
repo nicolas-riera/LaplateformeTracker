@@ -65,7 +65,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Options">
           <items>
-            <MenuItem mnemonicParsing="false" text="Changer le mot de passe" />
+            <MenuItem fx:id="changePasswordButton" mnemonicParsing="false" onAction="#handleChangePasswordAction" text="Changer le mot de passe" />
           </items>
         </Menu>
       </menus>
@@ -94,7 +94,7 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label text="... étudiants" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <Label fx:id="studentNumberLabel" text="... étudiants" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
@@ -117,24 +117,24 @@
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <TextField prefHeight="25.0" prefWidth="307.0" promptText="Rechercher" GridPane.columnIndex="1" />
-                                                <Button mnemonicParsing="false" text="🔎" GridPane.columnIndex="2" />
+                                                <TextField fx:id="searchBarField" prefHeight="25.0" prefWidth="307.0" promptText="Rechercher" GridPane.columnIndex="1" />
+                                                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearchAction" text="🔎" GridPane.columnIndex="2" />
                                              </children>
                                           </GridPane>
                                        </children>
                                     </GridPane>
                                  </children>
                               </GridPane>
-                              <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                              <TableView fx:id="tableStudent" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                 <columns>
-                                  <TableColumn prefWidth="53.5" text="ID" />
-                                  <TableColumn prefWidth="347.5" text="Nom/Prénom" />
-                                    <TableColumn minWidth="0.0" prefWidth="85.5" text="Âge" />
-                                    <TableColumn prefWidth="156.0" text="Classe" />
-                                    <TableColumn prefWidth="121.5" text="Moyenne" />
-                                    <TableColumn prefWidth="198.5" text="Manager" />
-                                    <TableColumn prefWidth="155.5" text="Numéro de téléphone" />
-                                    <TableColumn prefWidth="141.0" text="Possède un compte" />
+                                  <TableColumn fx:id="colID" prefWidth="53.5" text="ID" />
+                                  <TableColumn fx:id="colName" prefWidth="347.5" text="Nom/Prénom" />
+                                    <TableColumn fx:id="colAge" minWidth="0.0" prefWidth="85.5" text="Âge" />
+                                    <TableColumn fx:id="colDegree" prefWidth="156.0" text="Classe" />
+                                    <TableColumn fx:id="colMean" prefWidth="121.5" text="Moyenne" />
+                                    <TableColumn fx:id="colManager" prefWidth="198.5" text="Manager" />
+                                    <TableColumn fx:id="colPhone" prefWidth="155.5" text="Numéro de téléphone" />
+                                    <TableColumn fx:id="colAccount" prefWidth="141.0" text="Possède un compte" />
                                 </columns>
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" />
