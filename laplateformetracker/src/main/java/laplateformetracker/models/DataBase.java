@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 
 public class DataBase {
     Dotenv dotenv = null;
@@ -14,7 +17,14 @@ public class DataBase {
         try {
             dotenv = Dotenv.load();
         } catch (Exception e) {
-            System.out.println("Erreur avec le .env : " + e);
+            TextArea textArea = new TextArea();
+            textArea.setText(e.getMessage());
+            textArea.setWrapText(true);
+            textArea.setEditable(false);
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setHeaderText("Erreur avec le .env : ");
+            alert.getDialogPane().setContent(textArea);
+            alert.show();
         }
 
         if (dotenv != null) {
@@ -25,8 +35,17 @@ public class DataBase {
             props.setProperty("password", dotenv.get("POSTGRE_PASSWORD"));
             this.conn = DriverManager.getConnection(url, props);
             } catch (SQLException e) {
-                System.out.println("Erreur SQL : " + e.getMessage());
-                System.out.println("Code d'état : " + e.getSQLState());
+                TextArea textArea = new TextArea();
+                textArea.setText(String.format("""
+                        Erreur SQL : %s
+                        Code d'état : %s
+                        """, e.getMessage(), e.getSQLState()));
+                textArea.setWrapText(true);
+                textArea.setEditable(false);
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.getDialogPane().setContent(textArea);
+                alert.show();
             }
         } 
     }
@@ -35,8 +54,10 @@ public class DataBase {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
 
         if (this.conn == null) {
-        System.out.println("Erreur : La connexion à la base de données n'est pas établie.");
-        return result;
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("La connexion à la base de données n'est pas établie.");
+            alert.show();
+            return result;
         }
 
     try (PreparedStatement pst = conn.prepareStatement(request)) {
@@ -65,22 +86,39 @@ public class DataBase {
             }
         }
     } catch (SQLException e) {
-            System.out.println("Erreur SQL : " + e.getMessage());
-            System.out.println("Code d'état : " + e.getSQLState());
-            System.out.println("Requête : " + request);
+        TextArea textArea = new TextArea();
+        textArea.setText(String.format("""
+            Erreur SQL : %s
+            Code d'état : %s""",e.getMessage(),e.getSQLState()));
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.getDialogPane().setContent(textArea);
+        alert.show();
+        System.err.printf("Requete : %s", request);
         } catch (java.lang.NullPointerException e) {
-            System.out.println("Le pointeur est nul.");
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("Le pointeur est nul.");
+            alert.show();
         }
         return result;
     }
 
     public void close() {
-    try {
-        if (this.conn != null && !this.conn.isClosed()) {
-            this.conn.close();
+        try {
+            if (this.conn != null && !this.conn.isClosed()) {
+                this.conn.close();
+            }
+        } catch (SQLException e) {
+            TextArea textArea = new TextArea();
+            textArea.setText(e.getMessage());
+            textArea.setWrapText(true);
+            textArea.setEditable(false);
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setHeaderText("Erreur lors de la fermeture : ");
+            alert.getDialogPane().setContent(textArea);
+            alert.show();
         }
-    } catch (SQLException e) {
-        System.out.println("Erreur lors de la fermeture : " + e.getMessage());
-    }
     }
 }
