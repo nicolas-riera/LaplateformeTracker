@@ -1,5 +1,7 @@
 package laplateformetracker.controllers.login;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import laplateformetracker.models.DataBase;
 import laplateformetracker.models.ManagerModel;
@@ -68,18 +70,25 @@ public class LoginController {
     public void loginUser(String email, String password) throws java.io.IOException{
         Integer manager_id = ManagerModel.getID(email, database);
         Integer student_id = StudentModel.getID(email, database);
-       
+        Alert alert = new Alert(AlertType.NONE);
         if (manager_id != -1) {
             ArrayList<ArrayList<String>> user_infos = ManagerModel.getInfos(manager_id, database);
             String db_password = user_infos.get(0).get(2);
-            if (!(db_password != null && db_password.trim().isEmpty())) {
+            if (db_password.equals("null")) {
                 ChangePasswordPopupView changePasswordPopupView = new ChangePasswordPopupView(this.stage);
                 changePasswordPopupView.getFxmlController().setOnConfirmButtonCallback((newPassword) -> {
                     ManagerModel.update(manager_id, "password_hash", this.hashPassword(newPassword), database);
-                    System.out.println(ManagerModel.getInfos(manager_id, database));
+                    String updated_db_password = String.format(ManagerModel.getInfos(manager_id, database).get(0).get(2));
+                    if (!(updated_db_password.equals("null"))){
+                        alert.setAlertType(AlertType.INFORMATION);
+                        alert.setContentText("Mot de passe validé et enregistré.");
+                        alert.show();
+                        this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
+                    }
                     changePasswordPopupView.close();
                 });
-                this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
+                
+                
             }  else if (checkPassword(password, user_infos.get(0).get(2))) {
                 this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
             } else {
