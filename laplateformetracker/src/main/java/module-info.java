@@ -11,4 +11,5 @@ module laplateformetracker {
     opens laplateformetracker.controllers.login to javafx.fxml;
     exports laplateformetracker.models;
     opens laplateformetracker.controllers.popup to javafx.fxml;
+    opens laplateformetracker.controllers.mainMenu to javafx.fxml;
 }
