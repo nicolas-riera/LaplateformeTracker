@@ -40,7 +40,7 @@ public class StudentModel {
     }
 
     public static ArrayList<ArrayList<String>> getAllInfos(DataBase database) {
-        String request = "SELECT * FROM student";
+        String request = "SELECT * FROM student WHERE NOT is_deleted";
         return database.runRequest(request);
     }
 
