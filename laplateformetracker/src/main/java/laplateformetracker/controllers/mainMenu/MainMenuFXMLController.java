@@ -28,6 +28,7 @@ public class MainMenuFXMLController implements Initializable {
     // Variables
 
     private DataBase database;
+    private ArrayList<ArrayList<String>> allStudentsData = new ArrayList<>();
 
     // File Menu
     @FXML
@@ -102,13 +103,35 @@ public class MainMenuFXMLController implements Initializable {
     //Student tab
     @FXML
     public void handleSearchAction() {
-        String search = searchBarField.getText();
-        System.out.println(search);
+        String search = searchBarField.getText().toLowerCase().trim();
+
+        if (search.isEmpty()) {
+            updateDisplay(allStudentsData); 
+            return;
+        }
+
+        ArrayList<ArrayList<String>> filteredList = new ArrayList<>();
+
+        for (ArrayList<String> student : allStudentsData) {
+            String firstname = student.get(4).toLowerCase(); 
+            String lastname = student.get(5).toLowerCase();  
+
+            if (firstname.contains(search) || lastname.contains(search)) {
+                filteredList.add(student);
+            }
+        }
+
+        updateDisplay(filteredList);
     }
+
 
     // Init
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        searchBarField.textProperty().addListener((observable, oldValue, newValue) -> {
+            handleSearchAction();
+        });
 
         colID.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(0)));
 
@@ -232,14 +255,16 @@ public class MainMenuFXMLController implements Initializable {
         if (database != null) {
             ArrayList<ArrayList<String>> studentData = StudentModel.getAllInfos(database); 
             if (studentData != null) {
-                
-                ObservableList<ArrayList<String>> items = FXCollections.observableArrayList(studentData);
-                tableStudent.setItems(items);
-
-                int count = studentData.size();
-                studentNumberLabel.setText(count + " étudiants");
+                this.allStudentsData = studentData; 
+                updateDisplay(allStudentsData);
             }
         }
+    }
+
+    private void updateDisplay(ArrayList<ArrayList<String>> dataList) {
+        ObservableList<ArrayList<String>> items = FXCollections.observableArrayList(dataList);
+        tableStudent.setItems(items);
+        studentNumberLabel.setText(dataList.size() + " étudiants");
     }
 
 }
