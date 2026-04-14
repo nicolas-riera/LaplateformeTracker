@@ -12,7 +12,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -45,6 +48,8 @@ public class MainMenuFXMLController implements Initializable {
     private MenuItem changePasswordButton;
 
     private Runnable onChangePasswordCallback;
+
+    private Runnable onLogOutCallback;
 
     //Student tab
     @FXML
@@ -85,15 +90,33 @@ public class MainMenuFXMLController implements Initializable {
         System.out.println("Add student");
     }
 
+    public void setOnLogOutCallback(Runnable callback) {
+        this.onLogOutCallback = callback;
+    }
+
     @FXML
     public void handleLogOutAction() {
-        System.out.println("Log Out");
+        if (onLogOutCallback != null) {
+            onLogOutCallback.run();
+        }
     }
 
     @FXML
     public void handleQuitAction() {
-        javafx.application.Platform.exit();
-        System.exit(0);
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Quitter");
+        alert.setHeaderText("Vous allez quitter le programme.");
+        alert.setContentText("Voulez-vous vraiment quitter le programme ?");
+
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+        java.util.Optional<ButtonType> result = alert.showAndWait();
+        
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            javafx.application.Platform.exit();
+            System.exit(0);
+        }
+    
     }
 
     //Options Menu
