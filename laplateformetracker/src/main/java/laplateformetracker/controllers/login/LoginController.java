@@ -37,11 +37,7 @@ public class LoginController {
                 e.printStackTrace();
             }
         }
-        );
-        //Rectangle r = new Rectangle(25,25,250,250);
-        //r.setFill(Color.BLUE);
-        //this.loginview.addComponent(r);
-        
+        );        
     }
 
     private String hashPassword(String password) {
@@ -86,7 +82,7 @@ public class LoginController {
                     if (!(updated_db_password.equals("null"))){
                         alert.setAlertType(AlertType.INFORMATION);
                         alert.setContentText("Mot de passe validé et enregistré.");
-                        alert.show();
+                        alert.showAndWait();
                         try {
                             this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
                         } catch (java.io.IOException e) {
