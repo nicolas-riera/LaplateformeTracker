@@ -12,6 +12,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -80,6 +84,16 @@ public class MainMenuFXMLController implements Initializable {
     private TableColumn<ArrayList<String>, String> colPhone;
     @FXML
     private TableColumn<ArrayList<String>, String> colAccount;   
+
+    // Statistic Tab
+    @FXML
+    private BarChart<String, Number> meanPerDegree;
+
+    @FXML
+    private BarChart<String, Number> avgAgePerDegree;
+
+    @FXML
+    private PieChart numStudentPerDegree;
 
 
     // Methods
@@ -288,6 +302,7 @@ public class MainMenuFXMLController implements Initializable {
             if (studentData != null) {
                 this.allStudentsData = studentData; 
                 updateDisplay(allStudentsData);
+                updateStatistics();
             }
         }
     }
@@ -296,6 +311,74 @@ public class MainMenuFXMLController implements Initializable {
         ObservableList<ArrayList<String>> items = FXCollections.observableArrayList(dataList);
         tableStudent.setItems(items);
         studentNumberLabel.setText(dataList.size() + " étudiants");
+    }
+
+    // Statistic Tab
+    @SuppressWarnings("unchecked")
+    private void updateStatistics() {
+        if (numStudentPerDegree == null || meanPerDegree == null || avgAgePerDegree == null) return;
+        if (allStudentsData == null || allStudentsData.isEmpty()) return;
+
+        java.util.Map<String, Integer> countPerDegree = new java.util.HashMap<>();
+        java.util.Map<String, Double> sumMeanPerDegree = new java.util.HashMap<>();
+        java.util.Map<String, Integer> countMeanPerDegree = new java.util.HashMap<>();
+        java.util.Map<String, Double> sumAgePerDegree = new java.util.HashMap<>();
+        java.util.Map<String, Integer> countAgePerDegree = new java.util.HashMap<>();
+
+        for (ArrayList<String> student : allStudentsData) {
+            String degree = student.get(10);
+            String studentId = student.get(0);
+            String birthDate = student.get(6);
+
+            countPerDegree.put(degree, countPerDegree.getOrDefault(degree, 0) + 1);
+
+            String meanStr = calculateAverage(studentId).replace(",", ".");
+            if (!meanStr.equals("N/C") && !meanStr.equals("Error")) {
+                double val = Double.parseDouble(meanStr);
+                sumMeanPerDegree.put(degree, sumMeanPerDegree.getOrDefault(degree, 0.0) + val);
+                countMeanPerDegree.put(degree, countMeanPerDegree.getOrDefault(degree, 0) + 1);
+            }
+
+            try {
+                if (birthDate != null && !birthDate.isEmpty()) {
+                    int age = java.time.Period.between(java.time.LocalDate.parse(birthDate), java.time.LocalDate.now()).getYears();
+                    sumAgePerDegree.put(degree, sumAgePerDegree.getOrDefault(degree, 0.0) + age);
+                    countAgePerDegree.put(degree, countAgePerDegree.getOrDefault(degree, 0) + 1);
+                }
+            } catch (Exception e) {}
+        }
+
+        javafx.collections.ObservableList<javafx.scene.chart.PieChart.Data> pieData = javafx.collections.FXCollections.observableArrayList();
+        countPerDegree.forEach((d, c) -> pieData.add(new javafx.scene.chart.PieChart.Data(d, c)));
+        numStudentPerDegree.setData(pieData);
+
+        javafx.scene.chart.XYChart.Series<String, Number> s1 = new javafx.scene.chart.XYChart.Series<>();
+        s1.setName("Moyenne");
+        sumMeanPerDegree.forEach((d, sum) -> s1.getData().add(new javafx.scene.chart.XYChart.Data<>(d, sum / countMeanPerDegree.get(d))));
+        meanPerDegree.getData().setAll(s1);
+
+        int i = 0;
+        for (XYChart.Data<String, Number> data : s1.getData()) {
+            Node bar = data.getNode();
+            bar.getStyleClass().add("default-color" + (i % 8)); 
+            i++;
+        }
+
+        javafx.scene.chart.XYChart.Series<String, Number> s2 = new javafx.scene.chart.XYChart.Series<>();
+        s2.setName("Âge moyen");
+        sumAgePerDegree.forEach((d, sum) -> s2.getData().add(new javafx.scene.chart.XYChart.Data<>(d, sum / countAgePerDegree.get(d))));
+        avgAgePerDegree.getData().setAll(s2);   
+
+        i = 0;
+        for (XYChart.Data<String, Number> data : s2.getData()) {
+            Node bar = data.getNode();
+            bar.getStyleClass().add("default-color" + (i % 8)); 
+            i++;
+        }
+
+        meanPerDegree.setLegendVisible(false);
+        avgAgePerDegree.setLegendVisible(false);
+        numStudentPerDegree.setLegendVisible(false);
     }
 
 }
