@@ -44,6 +44,8 @@ public class MainMenuFXMLController implements Initializable {
     @FXML
     private MenuItem changePasswordButton;
 
+    private Runnable onChangePasswordCallback;
+
     //Student tab
     @FXML
     private Label studentNumberLabel;
@@ -97,7 +99,13 @@ public class MainMenuFXMLController implements Initializable {
     //Options Menu
     @FXML
     public void handleChangePasswordAction() {
-        System.out.println("Change Password");
+        if (onChangePasswordCallback != null) {
+            onChangePasswordCallback.run();
+        }
+    }
+
+    public void setOnChangePasswordCallback(Runnable callback) {
+        this.onChangePasswordCallback = callback;
     }
 
     //Student tab

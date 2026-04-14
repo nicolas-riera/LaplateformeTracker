@@ -22,4 +22,8 @@ public class MainMenuView {
         stage.setScene(scene);
         stage.show();
     }
+
+    public MainMenuFXMLController getFxmlController() {
+        return mainMenuFXMLController;
+    }
 }
