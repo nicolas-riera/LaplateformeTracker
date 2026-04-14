@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
+@SuppressWarnings("unused")
 public class LoginController {
     private LoginView loginview;
     private DataBase database;
