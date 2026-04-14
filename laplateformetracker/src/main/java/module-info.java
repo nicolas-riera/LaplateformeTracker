@@ -1,3 +1,4 @@
+@SuppressWarnings("all")
 module laplateformetracker {
     requires transitive javafx.graphics;
     requires javafx.controls;
