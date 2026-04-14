@@ -232,8 +232,12 @@ public class MainMenuFXMLController implements Initializable {
         if (database != null) {
             ArrayList<ArrayList<String>> studentData = StudentModel.getAllInfos(database); 
             if (studentData != null) {
+                
                 ObservableList<ArrayList<String>> items = FXCollections.observableArrayList(studentData);
                 tableStudent.setItems(items);
+
+                int count = studentData.size();
+                studentNumberLabel.setText(count + " étudiants");
             }
         }
     }
