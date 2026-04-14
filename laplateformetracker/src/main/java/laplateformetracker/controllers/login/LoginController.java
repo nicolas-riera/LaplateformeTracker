@@ -93,11 +93,6 @@ public class LoginController {
                         }
                     }
                     changePasswordPopupView.close();
-                    try {
-                        this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
-                    } catch (java.io.IOException e) {
-                        
-                    }
                 });
                 
             }  else if (checkPassword(password, user_infos.get(0).get(2))) {
