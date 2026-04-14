@@ -33,6 +33,7 @@ public class DataBase {
             Properties props = new Properties();
             props.setProperty("user", dotenv.get("POSTGRE_USER"));
             props.setProperty("password", dotenv.get("POSTGRE_PASSWORD"));
+            props.setProperty("charSet", "UTF-8");
             this.conn = DriverManager.getConnection(url, props);
             } catch (SQLException e) {
                 TextArea textArea = new TextArea();

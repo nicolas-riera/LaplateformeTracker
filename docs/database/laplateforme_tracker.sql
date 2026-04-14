@@ -232,23 +232,23 @@ COPY public.manager (id, email, password_hash, first_name, last_name) FROM stdin
 --
 
 COPY public.student (id, manager_id, email, password_hash, first_name, last_name, date_of_birth, address, phone, is_deleted, degree) FROM stdin;
-1	\N	thomas.morel@laplateforme.io	\N	Thomas	Morel	2001-05-12	20 rue de la RÔÇÜpublique, Marseille	0600000001	f	1J
+1	\N	thomas.morel@laplateforme.io	\N	Thomas	Morel	2001-05-12	20 rue de la République, Marseille	0600000001	f	1J
 2	\N	julie.rousseau@laplateforme.io	\N	Julie	Rousseau	2002-11-03	5 bd de Dunkerque, Marseille	0600000002	f	1L
 3	\N	mathieu.gauthier@laplateforme.io	\N	Mathieu	Gauthier	2000-02-25	12 rue Sainte, Marseille	0600000003	f	1D
 4	\N	sarah.andre@laplateforme.io	\N	Sarah	Andre	2003-08-14	88 rue d'Aubagne, Marseille	0600000004	f	1C
 5	\N	nicolas.masson@laplateforme.io	\N	Nicolas	Masson	1999-12-30	3 place de la Joliette, Marseille	0600000005	f	2J
-6	\N	lea.marchand@laplateforme.io	\N	LÔÇÜa	Marchand	2002-04-18	15 rue de Rome, Marseille	0600000006	f	2L
+6	\N	lea.marchand@laplateforme.io	\N	Léa	Marchand	2002-04-18	15 rue de Rome, Marseille	0600000006	f	2L
 7	\N	kevin.barbier@laplateforme.io	\N	Kevin	Barbier	2001-07-07	40 rue Breteuil, Marseille	0600000007	f	2D
 8	\N	camille.fontaine@laplateforme.io	\N	Camille	Fontaine	2000-10-22	22 rue d'Endoume, Marseille	0600000008	f	2C
 9	\N	alexandre.guillot@laplateforme.io	\N	Alexandre	Guillot	2002-01-15	11 bd National, Marseille	0600000009	f	3J
 10	\N	manon.brunet@laplateforme.io	\N	Manon	Brunet	2003-06-21	7 rue de Lodi, Marseille	0600000010	f	3L
 11	\N	hugo.faure@laplateforme.io	\N	Hugo	Faure	2001-02-10	14 bd Sakakini, Marseille	0600000011	f	3D
-12	\N	ines.mercier@laplateforme.io	\N	In┼ás	Mercier	2002-09-28	33 rue Saint-FerrÔÇÜol, Marseille	0600000012	f	3C
+12	\N	ines.mercier@laplateforme.io	\N	Inès	Mercier	2002-09-28	33 rue Saint-Ferréol, Marseille	0600000012	f	3C
 13	\N	arthur.blanc@laplateforme.io	\N	Arthur	Blanc	2000-05-05	50 av du Prado, Marseille	0600000013	f	1J
 14	\N	louna.guerin@laplateforme.io	\N	Louna	Guerin	2003-12-01	8 rue de la Loge, Marseille	0600000014	f	1L
 15	\N	jules.boyer@laplateforme.io	\N	Jules	Boyer	2001-08-19	120 rue de Rome, Marseille	0600000015	f	1D
 16	\N	alice.chevalier@laplateforme.io	\N	Alice	Chevalier	2002-03-25	21 rue d'Aix, Marseille	0600000016	f	1C
-17	\N	maxime.lucas@laplateforme.io	\N	Maxime	Lucas	1999-10-14	9 rue de l'Ev╦åchÔÇÜ, Marseille	0600000017	f	2J
+17	\N	maxime.lucas@laplateforme.io	\N	Maxime	Lucas	1999-10-14	9 rue de l'Évêché, Marseille	0600000017	f	2J
 18	\N	jade.garcia@laplateforme.io	\N	Jade	Garcia	2003-04-02	5 av de la Capelette, Marseille	0600000018	f	2L
 19	\N	quentin.roux@laplateforme.io	\N	Quentin	Roux	2000-11-30	18 rue de Lodi, Marseille	0600000019	f	2D
 20	\N	clara.moreau@laplateforme.io	\N	Clara	Moreau	2001-06-15	44 bd Chave, Marseille	0600000020	f	3C
