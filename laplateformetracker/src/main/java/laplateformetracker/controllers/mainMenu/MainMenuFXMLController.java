@@ -18,6 +18,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import laplateformetracker.models.DataBase;
+import laplateformetracker.models.GradeModel;
+import laplateformetracker.models.ManagerModel;
 import laplateformetracker.models.StudentModel;
 import javafx.scene.control.Label;
 
@@ -107,6 +109,7 @@ public class MainMenuFXMLController implements Initializable {
     // Init
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         colID.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(0)));
 
         colName.setCellValueFactory(data -> {
@@ -136,12 +139,88 @@ public class MainMenuFXMLController implements Initializable {
             return new SimpleStringProperty(displayAge);
         });
 
-        colDegree.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(9)));
-        // colMean.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(4)));
-        // colManager.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(5)));
-        colPhone.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(8)));
-        // colAccount.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(7)));
+        colDegree.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(10)));
 
+        colMean.setCellValueFactory(data -> {
+            String studentId = data.getValue().get(0);
+            
+            if (database == null) {
+                return new SimpleStringProperty("...");
+            }
+            
+            String mean = calculateAverage(studentId);
+            return new SimpleStringProperty(mean);
+        });
+
+        colManager.setCellValueFactory(data -> {
+            String managerIDStr = data.getValue().get(1);
+
+            if (database == null || managerIDStr == null || managerIDStr.equals("null") || managerIDStr.isEmpty()) {
+                return new SimpleStringProperty("Inconnu");
+            }
+
+            try {
+                int managerID = Integer.parseInt(managerIDStr);
+                ArrayList<ArrayList<String>> managerData = ManagerModel.getInfos(managerID, database);
+
+                if (managerData == null || managerData.isEmpty()) {
+                    return new SimpleStringProperty("Inconnu");
+                }
+
+                ArrayList<String> firstRow = managerData.get(0);
+                String firstname = firstRow.get(3);
+                String lastname = firstRow.get(4);
+                
+                return new SimpleStringProperty(lastname + " " + firstname);
+
+            } catch (NumberFormatException e) {
+                return new SimpleStringProperty("ID Invalide");
+            } catch (Exception e) {
+                return new SimpleStringProperty("Erreur");
+            }
+        });
+
+        colPhone.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(8)));
+
+        colAccount.setCellValueFactory(data -> {
+            String passwordStudent = data.getValue().get(3);
+
+            if (passwordStudent == null || 
+                    passwordStudent.isEmpty() || 
+                    passwordStudent.equalsIgnoreCase("null") || 
+                    passwordStudent.equals("\\N")) {
+                    
+                    return new SimpleStringProperty("Non");
+                } else {
+                    return new SimpleStringProperty("Oui");
+                }
+            });
+    }
+
+    private String calculateAverage(String studentIdStr) {
+        try {
+            int studentId = Integer.parseInt(studentIdStr);
+            ArrayList<ArrayList<String>> gradesData = GradeModel.getStudentGrades(studentId, database);
+
+            if (gradesData == null || gradesData.isEmpty()) {
+                return "N/C";
+            }
+
+            double sum = 0;
+            int count = 0;
+
+            for (ArrayList<String> row : gradesData) {
+                double grade = Double.parseDouble(row.get(4)); 
+                sum += grade;
+                count++;
+            }
+
+            if (count == 0) return "N/C";
+            return String.format("%.2f", sum / count);
+
+        } catch (Exception e) {
+            return "Error";
+        }
     }
 
     public void setDataBase(DataBase db) {

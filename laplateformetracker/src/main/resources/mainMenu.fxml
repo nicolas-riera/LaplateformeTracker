@@ -127,14 +127,14 @@
                               </GridPane>
                               <TableView fx:id="tableStudent" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                 <columns>
-                                  <TableColumn fx:id="colID" prefWidth="53.5" text="ID" />
-                                  <TableColumn fx:id="colName" prefWidth="347.5" text="Nom/Prénom" />
-                                    <TableColumn fx:id="colAge" minWidth="0.0" prefWidth="85.5" text="Âge" />
-                                    <TableColumn fx:id="colDegree" prefWidth="156.0" text="Classe" />
-                                    <TableColumn fx:id="colMean" prefWidth="121.5" text="Moyenne" />
-                                    <TableColumn fx:id="colManager" prefWidth="198.5" text="Manager" />
-                                    <TableColumn fx:id="colPhone" prefWidth="155.5" text="Numéro de téléphone" />
-                                    <TableColumn fx:id="colAccount" prefWidth="141.0" text="Possède un compte" />
+                                  <TableColumn fx:id="colID" prefWidth="53.5" style="-fx-alignment: CENTER;" text="ID" />
+                                  <TableColumn fx:id="colName" prefWidth="347.5" style="-fx-alignment: CENTER;" text="Nom/Prénom" />
+                                    <TableColumn fx:id="colAge" minWidth="0.0" prefWidth="85.5" style="-fx-alignment: CENTER;" text="Âge" />
+                                    <TableColumn fx:id="colDegree" prefWidth="156.0" style="-fx-alignment: CENTER;" text="Classe" />
+                                    <TableColumn fx:id="colMean" prefWidth="121.5" style="-fx-alignment: CENTER;" text="Moyenne" />
+                                    <TableColumn fx:id="colManager" prefWidth="198.5" style="-fx-alignment: CENTER;" text="Manager" />
+                                    <TableColumn fx:id="colPhone" prefWidth="155.5" style="-fx-alignment: CENTER;" text="Numéro de téléphone" />
+                                    <TableColumn fx:id="colAccount" prefWidth="141.0" style="-fx-alignment: CENTER;" text="Possède un compte" />
                                 </columns>
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" />
