@@ -25,7 +25,7 @@ public class LoginController {
     public LoginController(Stage stage) throws java.io.IOException {
 
         this.stage = stage;
-        this.stage.setTitle("LaPlateforme Tracker");;
+        this.stage.setTitle("LaPlateforme Tracker");
         this.database = new DataBase();
 
         this.loginview = new LoginView(this.stage);

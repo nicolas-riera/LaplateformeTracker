@@ -21,6 +21,7 @@ public class ChangePasswordPopupView {
         this.dialog.initModality(Modality.NONE);
         this.dialog.initOwner(primaryStage);
         Scene dialogScene = new Scene(root, 600, 230);
+        this.dialog.setTitle("Changer le mot de passe");
         this.changePasswordPopupFXMLController = loader.getController();
         this.dialog.setScene(dialogScene);
         this.dialog.show();
