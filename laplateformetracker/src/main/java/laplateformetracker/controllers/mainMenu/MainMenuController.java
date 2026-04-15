@@ -5,11 +5,15 @@ import laplateformetracker.User;
 import laplateformetracker.controllers.login.LoginController;
 import laplateformetracker.views.MainMenuView;
 import laplateformetracker.models.ManagerModel;
+import laplateformetracker.models.StudentModel;
+
+import java.time.LocalDate;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import laplateformetracker.views.popup.AddStudentPopupView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
 
 public class MainMenuController {
@@ -64,6 +68,45 @@ public class MainMenuController {
                     new LoginController(this.stage);
                 } catch (java.io.IOException e) {
                 }
+            }
+        });
+
+        this.mainmenuview.getFxmlController().setOnAddStudentCallback(() -> {
+            try {
+                AddStudentPopupView addStudentPopupView = new AddStudentPopupView(this.stage);
+                
+                addStudentPopupView.getFxmlController().setOnAddButtonCallback((infos) -> {
+                    
+                    StudentModel.create(
+                        this.user.getId(),
+                        infos.get(4),
+                        infos.get(1),
+                        infos.get(0),
+                        LocalDate.parse(infos.get(2)),
+                        infos.get(3),
+                        infos.get(5),
+                        infos.get(6),
+                        this.user.getDatabase()
+                    );
+
+                    int student_id = StudentModel.getID(infos.get(4), this.user.getDatabase());
+
+                    if (student_id != -1) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Succès");
+                        alert.setHeaderText(null);
+                        alert.setContentText("L'étudiant " + infos.get(1) + " " + infos.get(0) + " a bien été ajouté.");
+                        alert.showAndWait();
+                        
+                        addStudentPopupView.close();
+
+                        mainmenuview.getFxmlController().refreshTable();
+                        
+                    }
+                });
+                
+            } catch (java.io.IOException e) {
+                e.printStackTrace(); 
             }
         });
     }

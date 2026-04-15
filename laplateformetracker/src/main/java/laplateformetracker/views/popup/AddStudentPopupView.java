@@ -19,7 +19,7 @@ public class AddStudentPopupView {
         this.root = loader.load();
         this.dialog.initModality(Modality.NONE);
         this.dialog.initOwner(primaryStage);
-        Scene dialogScene = new Scene(root, 600, 230);
+        Scene dialogScene = new Scene(root, 603, 399);
         this.dialog.setTitle("Ajouter un étudiant");
         this.addStudentPopupFXMLController = loader.getController();
         this.dialog.setScene(dialogScene);
