@@ -113,8 +113,8 @@ CREATE TABLE public.student (
     phone character varying(20) NOT NULL,
     is_deleted boolean DEFAULT false,
     degree character varying(2) NOT NULL,
-    CONSTRAINT check_degree_valid CHECK (((degree)::text = ANY ((ARRAY['1J'::character varying, '1L'::character varying, '1D'::character varying, '1C'::character varying, '2J'::character varying, '2L'::character varying, '2D'::character varying, '2C'::character varying, '3J'::character varying, '3L'::character varying, '3D'::character varying, '3C'::character varying, '4J'::character varying, '4L'::character varying, '4D'::character varying, '4C'::character varying, '5J'::character varying, '5L'::character varying, '5D'::character varying, '5C'::character varying])::text[])))
-);
+    CONSTRAINT check_degree_valid CHECK ((degree)::text = ANY (ARRAY['1L'::character varying, '1J'::character varying, '1W'::character varying, '1C'::character varying, '1D'::character varying, '2L'::character varying, '2J'::character varying, '2W'::character varying, '2C'::character varying, '2D'::character varying, '3L'::character varying, '3J'::character varying, '3W'::character varying, '3C'::character varying, '3D'::character varying]::text[]))
+    );
 
 
 ALTER TABLE public.student OWNER TO postgres;
