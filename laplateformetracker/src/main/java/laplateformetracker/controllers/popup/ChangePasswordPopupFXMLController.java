@@ -21,9 +21,6 @@ public class ChangePasswordPopupFXMLController {
     @FXML
     private Button confirmButton;
 
-    @FXML
-    private Button cancelButton;
-
     private Consumer<String> onConfirmButtonCallback;
 
     public void setOnConfirmButtonCallback(Consumer<String> callback){

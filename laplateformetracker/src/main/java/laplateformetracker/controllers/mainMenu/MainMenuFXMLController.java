@@ -41,6 +41,8 @@ public class MainMenuFXMLController implements Initializable {
     @FXML
     private MenuItem addStudentButton;
 
+    private Runnable onAddStudentCallback;
+
     @FXML
     private MenuItem logOutButton;
 
@@ -102,9 +104,17 @@ public class MainMenuFXMLController implements Initializable {
     // Methods
 
     // File Menu
+
+    public void setOnAddStudentCallback(Runnable callback) {
+        this.onAddStudentCallback = callback;
+    }
+
     @FXML
     public void handleAddStudentAction() {
-        System.out.println("Add student");
+        if (onAddStudentCallback != null) {
+            onAddStudentCallback.run();
+        }
+        refreshTable();
     }
 
     public void setOnLogOutCallback(Runnable callback) {

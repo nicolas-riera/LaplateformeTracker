@@ -46,7 +46,8 @@ public class DataBase {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setHeaderText(null);
                 alert.getDialogPane().setContent(textArea);
-                alert.show();
+                alert.showAndWait();
+                exitIfConnectionError(e);
             }
         } 
     }
@@ -93,15 +94,18 @@ public class DataBase {
             Code d'état : %s""",e.getMessage(),e.getSQLState()));
         textArea.setWrapText(true);
         textArea.setEditable(false);
+        System.err.printf("Requete : %s", request);
         Alert alert = new Alert(AlertType.ERROR);
         alert.setHeaderText(null);
         alert.getDialogPane().setContent(textArea);
-        alert.show();
-        System.err.printf("Requete : %s", request);
+        alert.showAndWait();  
+        
+        exitIfConnectionError(e);
+
         } catch (java.lang.NullPointerException e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText("Le pointeur est nul.");
-            alert.show();
+            alert.showAndWait();
         }
         return result;
     }
@@ -120,6 +124,17 @@ public class DataBase {
             alert.setHeaderText("Erreur lors de la fermeture : ");
             alert.getDialogPane().setContent(textArea);
             alert.show();
+        }
+    }
+
+    private void exitIfConnectionError(SQLException e) {
+        String sqlState = e.getSQLState();
+        if (sqlState != null) {
+            sqlState = sqlState.trim();
+            if (sqlState.startsWith("08")) {
+                javafx.application.Platform.exit();
+                System.exit(0);
+            }
         }
     }
 }
