@@ -24,6 +24,7 @@ public class StudentMenuView {
             this.studentMenuFXMLController.getDeleteStudentButton().setDisable(true);
             this.studentMenuFXMLController.getModifyStudentButton().setDisable(true);
             this.studentMenuFXMLController.getChangePasswordButton().setDisable(true);
+            this.studentMenuFXMLController.getReturnButton().setDisable(true);
         }
         stage.setScene(scene);
         stage.show();
