@@ -70,6 +70,8 @@ public class MainMenuFXMLController implements Initializable {
     @FXML
     private Button searchButton;
 
+    private Runnable onStudentSelectedCallback;
+
     @FXML
     private TableView<ArrayList<String>> tableStudent;
 
@@ -270,6 +272,30 @@ public class MainMenuFXMLController implements Initializable {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    public void handleOnStudentSelectedAction(){
+        if (onStudentSelectedCallback != null){
+            onStudentSelectedCallback.run();
+        }
+    }
+
+    public TableView<ArrayList<String>> getTableStudent(){
+        return tableStudent;
+    }
+
+    public void setOnStudentSelectedCallback(Runnable callback){
+        this.onStudentSelectedCallback = callback;
+    }
+
+    public void setOnTableStudentDoubleClick(){
+        tableStudent.setOnMouseClicked(event -> {
+            // Check if the event is a double click (click count == 2)
+            if (event.getClickCount() == 2 && tableStudent.getSelectionModel().getSelectedItem() != null) {
+                handleOnStudentSelectedAction();
+            }
+        });
     }
 
     // Init

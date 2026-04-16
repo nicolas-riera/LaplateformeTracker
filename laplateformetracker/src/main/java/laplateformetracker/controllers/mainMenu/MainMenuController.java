@@ -109,6 +109,10 @@ public class MainMenuController {
                 e.printStackTrace(); 
             }
         });
+
+        this.mainmenuview.getFxmlController().setOnStudentSelectedCallback(() -> {
+            System.out.println(this.mainmenuview.getFxmlController().getTableStudent().getSelectionModel().getSelectedItem().get(0));
+        });
     }
 
     private String hashPassword(String password) {

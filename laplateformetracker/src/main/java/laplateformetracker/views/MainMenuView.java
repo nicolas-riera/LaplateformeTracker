@@ -16,7 +16,7 @@ public class MainMenuView {
         this.root = loader.load();
         Scene scene = new Scene(root, 1280, 720);
         this.mainMenuFXMLController = loader.getController();
-        
+        this.mainMenuFXMLController.setOnTableStudentDoubleClick();
         this.mainMenuFXMLController.setDataBase(user.getDatabase());
 
         stage.setScene(scene);
