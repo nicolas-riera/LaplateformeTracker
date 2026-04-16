@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
@@ -28,13 +29,10 @@ public class StudentMenuFXMLController implements Initializable {
     // File Menu
     @FXML
     private MenuItem modifyStudentButton;
-
     @FXML
     private MenuItem deleteStudentButton;
-
     @FXML
     private MenuItem logOutButton;
-
     @FXML
     private MenuItem quitButton;
 
@@ -42,59 +40,47 @@ public class StudentMenuFXMLController implements Initializable {
     @FXML
     private MenuItem changePasswordButton;
 
+    @FXML
+    private Button returnButton;
+
     // Callbacks
     private Runnable onModifyStudentCallback;
-
     private Runnable onDeleteStudentCallback;
-
     private Runnable onChangePasswordCallback;
-
     private Runnable onLogOutCallback;
-
     private Runnable onQuitCallback;
+    private Runnable onReturnCallback;
 
     // Student infos
     @FXML
     private Label userEmailLabel;
-
     @FXML
     private Label userFirstNameLabel;
-
     @FXML
     private Label userLastNameLabel;
-
     @FXML
     private Label userBirthDateLabel;
-
     @FXML
     private Label userAddressLabel;
-
     @FXML
     private Label userPhoneLabel;
-
     @FXML
     private Label userDegreeLabel;
-
     @FXML
     private Label userManagerLabel;
 
     @FXML
     private TableView<ArrayList<String>> tableGrade;
-
     @FXML
     private TableColumn<ArrayList<String>, String> colId;
-
     @FXML
     private TableColumn<ArrayList<String>, String> colDate;
-
     @FXML
     private TableColumn<ArrayList<String>, String> colSkill;
-
     @FXML
     private TableColumn<ArrayList<String>, String> colGrade;
 
     // Methods
-
     public void setDataBase(DataBase db) {
         this.database = db;    
     }
@@ -135,11 +121,9 @@ public class StudentMenuFXMLController implements Initializable {
     public MenuItem getModifyStudentButton(){
         return modifyStudentButton;
     }
-
     public void setOnModifyStudentCallback(Runnable callback){
         this.onModifyStudentCallback = callback;
     }
-
     @FXML
     public void handleModifyStudentAction() {
         if (onModifyStudentCallback != null) {
@@ -150,11 +134,9 @@ public class StudentMenuFXMLController implements Initializable {
     public MenuItem getDeleteStudentButton(){
         return deleteStudentButton;
     }
-
     public void setOnDeleteStudentCallback(Runnable callback){
         this.onDeleteStudentCallback = callback;
     }
-
     @FXML
     public void handleDeleteStudentAction() {
         if (onDeleteStudentCallback != null) {
@@ -165,7 +147,6 @@ public class StudentMenuFXMLController implements Initializable {
     public void setOnLogOutCallback(Runnable callback) {
         this.onLogOutCallback = callback;
     }
-
     @FXML
     public void handleLogOutAction() {
         if (onLogOutCallback != null) {
@@ -176,7 +157,6 @@ public class StudentMenuFXMLController implements Initializable {
     public void setOnQuitCallback(Runnable callback) {
         this.onQuitCallback = callback;
     }
-
     @FXML
     public void handleQuitAction() {
         if (onQuitCallback != null) {
@@ -188,15 +168,26 @@ public class StudentMenuFXMLController implements Initializable {
     public MenuItem getChangePasswordButton(){
         return changePasswordButton;
     }
-
     public void setOnChangePasswordCallback(Runnable callback) {
         this.onChangePasswordCallback = callback;
     }
-
     @FXML
     public void handleChangePasswordAction() {
         if (onChangePasswordCallback != null) {
             onChangePasswordCallback.run();
+        }
+    }
+
+    public Button getReturnButton(){
+        return returnButton;
+    }
+    public void setOnReturnCallback(Runnable callback){
+        this.onReturnCallback = callback;
+    }
+    @FXML
+    public void handleReturnAction(){
+        if (onReturnCallback != null){
+            onReturnCallback.run();
         }
     }
 

@@ -7,6 +7,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import laplateformetracker.User;
 import laplateformetracker.controllers.login.LoginController;
+import laplateformetracker.controllers.mainMenu.MainMenuController;
 import laplateformetracker.models.ManagerModel;
 import laplateformetracker.views.StudentMenuView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
@@ -16,6 +17,7 @@ public class StudentMenuController {
     private User user;
     private Integer studentId;
     private StudentMenuView studentMenuView;
+    private MainMenuController mainMenuController;
 
     public StudentMenuController(Stage stage, User user, Integer studentId){
         this.stage = stage;
@@ -28,7 +30,7 @@ public class StudentMenuController {
         if (this.studentMenuView != null) {
             this.setFXMLControllerOnChangePasswordCallback();
             this.setFXMLControllerOnLogoutCallback();
-            // Add your other init calls here
+            this.setFXMLControllerOnReturnCallback();
         }
     }
 
@@ -119,13 +121,21 @@ public class StudentMenuController {
         });
     }
 
+    private void setFXMLControllerOnReturnCallback(){
+        this.studentMenuView.getFxmlController().setOnReturnCallback(() -> {
+            try{
+                instantiateMainMenu(this.user);
+            }catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void instantiateMainMenu(User user) throws java.io.IOException {
+        this.mainMenuController =  new MainMenuController(this.stage, user);
+    }
+
     private String hashPassword(String password) {
          return BCrypt.withDefaults().hashToString(12, password.toCharArray());
     }
-
 }
-
-        
-
-        
-
