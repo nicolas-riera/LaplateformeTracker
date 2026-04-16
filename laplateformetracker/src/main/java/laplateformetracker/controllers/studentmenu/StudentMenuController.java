@@ -9,8 +9,10 @@ import laplateformetracker.User;
 import laplateformetracker.controllers.login.LoginController;
 import laplateformetracker.controllers.mainMenu.MainMenuController;
 import laplateformetracker.models.ManagerModel;
+import laplateformetracker.models.StudentModel;
 import laplateformetracker.views.StudentMenuView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
+import laplateformetracker.views.popup.ModifyStudentPopupView;
 
 public class StudentMenuController {
     private Stage stage;
@@ -28,6 +30,8 @@ public class StudentMenuController {
     public void initController(){
         this.instantiateStudentMenuView();
         if (this.studentMenuView != null) {
+            this.setFXMLControllerOnModifyStudentCallback();
+            this.setFXMLControllerOnDeleteStudentCallback();
             this.setFXMLControllerOnChangePasswordCallback();
             this.setFXMLControllerOnLogoutCallback();
             this.setFXMLControllerOnReturnCallback();
@@ -45,7 +49,56 @@ public class StudentMenuController {
 
     private void setFXMLControllerOnModifyStudentCallback(){
         this.studentMenuView.getFxmlController().setOnModifyStudentCallback(() -> {
-             System.out.println("Modify student");
+            try {
+                ModifyStudentPopupView modifyStudentPopupView = new ModifyStudentPopupView(stage);
+                modifyStudentPopupView.getFxmlController().pullStudentInfos(studentId,user.getDatabase());
+                modifyStudentPopupView.getFxmlController().setOnModifyButtonCallback((infoList) -> {
+                    String column;
+                    for (int i = 0; i < infoList.size(); i++){
+                        column = "";
+                        if ( !infoList.get(i).isEmpty() || infoList.get(i) == null ){
+                            switch (i) {
+                                case 0:
+                                    column = "last_name";
+                                    break;
+                                case 1:
+                                    column = "first_name";
+                                    break;
+                                case 2:
+                                    column = "date_of_birth";
+                                    break;
+                                case 3:
+                                    column = "address";
+                                    break;
+                                case 4:
+                                    column = "email";
+                                    break;
+                                case 5:
+                                    column = "phone";
+                                    break;
+                                case 6:
+                                    column = "degree";
+                                    break;
+                                default:
+                                    System.err.println("Unreferenced column in StudentMenuController.setFXMLControllerOnModifyStudentCallback()");
+                                    break;
+                            }
+                            if (!column.isEmpty()){
+                                StudentModel.update(studentId, column, infoList.get(i), user.getDatabase());
+                            }
+                        };
+                    }
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Succès");
+                    alert.setHeaderText(null);
+                    alert.setContentText("L'étudiant a bien été mis à jour.");
+                    alert.showAndWait();
+                    modifyStudentPopupView.close();
+                    studentMenuView.getFxmlController().pullStudentInfos();
+                }); 
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
