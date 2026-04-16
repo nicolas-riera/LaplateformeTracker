@@ -3,6 +3,7 @@ package laplateformetracker.controllers.mainMenu;
 import javafx.stage.Stage;
 import laplateformetracker.User;
 import laplateformetracker.controllers.login.LoginController;
+import laplateformetracker.controllers.studentmenu.StudentMenuController;
 import laplateformetracker.views.MainMenuView;
 import laplateformetracker.models.ManagerModel;
 import laplateformetracker.models.StudentModel;
@@ -21,6 +22,7 @@ public class MainMenuController {
     private Stage stage;
     private User user;
     private MainMenuView mainmenuview;
+    private StudentMenuController studentMenuController;
 
     public MainMenuController(Stage stage, User user) throws java.io.IOException {
         this.stage = stage;
@@ -111,8 +113,18 @@ public class MainMenuController {
         });
 
         this.mainmenuview.getFxmlController().setOnStudentSelectedCallback(() -> {
-            System.out.println(this.mainmenuview.getFxmlController().getTableStudent().getSelectionModel().getSelectedItem().get(0));
+            System.out.println();
+            try{
+                this.instantiateStudentMenu(this.user, this.mainmenuview.getFxmlController().getTableStudent().getSelectionModel().getSelectedItem().get(0));
+            }catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
         });
+    }
+
+    private void instantiateStudentMenu(User user, String studentId) throws java.io.IOException {
+        this.studentMenuController = new StudentMenuController(this.stage, user, Integer.parseInt(studentId));
+        this.studentMenuController.initController();
     }
 
     private String hashPassword(String password) {
