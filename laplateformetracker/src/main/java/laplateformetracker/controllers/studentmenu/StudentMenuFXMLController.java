@@ -15,12 +15,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import laplateformetracker.models.DataBase;
 import laplateformetracker.models.GradeModel;
+import laplateformetracker.models.ManagerModel;
+import laplateformetracker.models.StudentModel;
 
 public class StudentMenuFXMLController implements Initializable {
 
     private DataBase database;
     private int userId;
     private ArrayList<ArrayList<String>> allGradesData = new ArrayList<>();
+    private ArrayList<ArrayList<String>> studentInfos;
 
     // File Menu
     @FXML
@@ -96,8 +99,21 @@ public class StudentMenuFXMLController implements Initializable {
         this.database = db;    
     }
 
-    public void setUserId(int id) {
+    public void setStudentId(int id) {
         this.userId = id;    
+    }
+
+    public void pullStudentInfos(){
+        this.studentInfos = StudentModel.getInfos(userId, database);
+        userEmailLabel.setText(studentInfos.get(0).get(2));
+        userFirstNameLabel.setText(studentInfos.get(0).get(4));
+        userLastNameLabel.setText(studentInfos.get(0).get(5));
+        userBirthDateLabel.setText(studentInfos.get(0).get(6));
+        userAddressLabel.setText(studentInfos.get(0).get(7));
+        userPhoneLabel.setText(studentInfos.get(0).get(8));
+        userDegreeLabel.setText(studentInfos.get(0).get(10));
+        ArrayList<ArrayList<String>> managerInfos = ManagerModel.getInfos(Integer.parseInt(studentInfos.get(0).get(1)), database);
+        userManagerLabel.setText(String.format("%s %s", managerInfos.get(0).get(3), managerInfos.get(0).get(4)));
     }
 
     public void refreshTable() {
@@ -116,6 +132,10 @@ public class StudentMenuFXMLController implements Initializable {
     }
 
     // File Menu
+    public MenuItem getModifyStudentButton(){
+        return modifyStudentButton;
+    }
+
     public void setOnModifyStudentCallback(Runnable callback){
         this.onModifyStudentCallback = callback;
     }
@@ -125,6 +145,10 @@ public class StudentMenuFXMLController implements Initializable {
         if (onModifyStudentCallback != null) {
             onModifyStudentCallback.run();
         }
+    }
+
+    public MenuItem getDeleteStudentButton(){
+        return deleteStudentButton;
     }
 
     public void setOnDeleteStudentCallback(Runnable callback){
@@ -161,6 +185,10 @@ public class StudentMenuFXMLController implements Initializable {
     }
 
     //Options Menu
+    public MenuItem getChangePasswordButton(){
+        return changePasswordButton;
+    }
+
     public void setOnChangePasswordCallback(Runnable callback) {
         this.onChangePasswordCallback = callback;
     }

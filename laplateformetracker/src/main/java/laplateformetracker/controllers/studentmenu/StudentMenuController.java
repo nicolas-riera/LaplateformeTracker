@@ -34,7 +34,7 @@ public class StudentMenuController {
 
     private void instantiateStudentMenuView(){
         try{
-            this.studentMenuView = new StudentMenuView(this.stage, this.user);
+            this.studentMenuView = new StudentMenuView(this.stage, this.user, this.studentId);
         } catch (java.io.IOException e) {
             System.err.println(e);
             System.err.println("ERROR INSTANTIATING STUDENT MENU VIEW");         
