@@ -10,6 +10,7 @@ import laplateformetracker.views.LoginView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
 import laplateformetracker.User;
 import laplateformetracker.controllers.mainMenu.MainMenuController;
+import laplateformetracker.controllers.studentmenu.StudentMenuController;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ public class LoginController {
     private Stage stage;
     private User user;
     private MainMenuController mainMenuController;
+    private StudentMenuController studentMenuController;
 
     public LoginController(Stage stage) throws java.io.IOException {
 
@@ -54,17 +56,31 @@ public class LoginController {
     }
 
     private User instantiateUser(DataBase database, Integer id, ArrayList<ArrayList<String>> user_infos, boolean isManager){
-        this.user = new User(database,
-                             id,
-                             user_infos.get(0).get(1),
-                             user_infos.get(0).get(3),
-                             user_infos.get(0).get(4),
-                             isManager);
+        if (isManager) {
+            this.user = new User(database,
+                                id,
+                                user_infos.get(0).get(1),
+                                user_infos.get(0).get(3),
+                                user_infos.get(0).get(4),
+                                isManager);
+        } else {
+            this.user = new User(database,
+                                id,
+                                user_infos.get(0).get(2),
+                                user_infos.get(0).get(4),
+                                user_infos.get(0).get(5),
+                                isManager);
+        }
         return this.user;
     }
 
     private void instantiateMainMenu(User user) throws java.io.IOException {
         this.mainMenuController =  new MainMenuController(this.stage, user);
+    }
+
+    private void instantiateStudentMenu(User user) throws java.io.IOException {
+        this.studentMenuController = new StudentMenuController(this.stage, user, user.getId());
+        this.studentMenuController.initController();
     }
 
     public void loginUser(String email, String password) throws java.io.IOException {
@@ -101,8 +117,8 @@ public class LoginController {
             }
         } else if (student_id != -1) {
             ArrayList<ArrayList<String>> user_infos = StudentModel.getInfos(student_id, database);
-            if (checkPassword(password, user_infos.get(0).get(2))) {
-                // Instantiate Student ?
+            if (checkPassword(password, user_infos.get(0).get(2)) || true) {
+                this.instantiateStudentMenu(this.instantiateUser(database, student_id, user_infos, false));
             } else {
                 alert.setAlertType(AlertType.WARNING);
                 alert.setContentText("Email ou mot de passe incorrect.");
