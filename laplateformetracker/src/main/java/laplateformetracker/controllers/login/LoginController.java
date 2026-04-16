@@ -56,12 +56,21 @@ public class LoginController {
     }
 
     private User instantiateUser(DataBase database, Integer id, ArrayList<ArrayList<String>> user_infos, boolean isManager){
-        this.user = new User(database,
-                             id,
-                             user_infos.get(0).get(1),
-                             user_infos.get(0).get(3),
-                             user_infos.get(0).get(4),
-                             isManager);
+        if (isManager) {
+            this.user = new User(database,
+                                id,
+                                user_infos.get(0).get(1),
+                                user_infos.get(0).get(3),
+                                user_infos.get(0).get(4),
+                                isManager);
+        } else {
+            this.user = new User(database,
+                                id,
+                                user_infos.get(0).get(2),
+                                user_infos.get(0).get(4),
+                                user_infos.get(0).get(5),
+                                isManager);
+        }
         return this.user;
     }
 

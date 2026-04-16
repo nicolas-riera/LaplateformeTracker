@@ -17,6 +17,7 @@ public class StudentMenuView {
         Scene scene = new Scene(root, 1280, 720);
         this.studentMenuFXMLController = loader.getController();
         this.studentMenuFXMLController.setDataBase(user.getDatabase());
+        this.studentMenuFXMLController.setUserId(user.getId());
         this.studentMenuFXMLController.refreshTable();
         stage.setScene(scene);
         stage.show();

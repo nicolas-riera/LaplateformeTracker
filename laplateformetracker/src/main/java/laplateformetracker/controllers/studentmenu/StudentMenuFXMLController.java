@@ -14,10 +14,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import laplateformetracker.models.DataBase;
-import laplateformetracker.models.StudentModel;
+import laplateformetracker.models.GradeModel;
 
-public class StudentMenuFXMLController implements Initializable{
+public class StudentMenuFXMLController implements Initializable {
+
     private DataBase database;
+    private int userId;
     private ArrayList<ArrayList<String>> allGradesData = new ArrayList<>();
 
     // File Menu
@@ -74,7 +76,7 @@ public class StudentMenuFXMLController implements Initializable{
     private Label userManagerLabel;
 
     @FXML
-    private TableView <ArrayList<String>> tableGrade;
+    private TableView<ArrayList<String>> tableGrade;
 
     @FXML
     private TableColumn<ArrayList<String>, String> colId;
@@ -94,9 +96,13 @@ public class StudentMenuFXMLController implements Initializable{
         this.database = db;    
     }
 
+    public void setUserId(int id) {
+        this.userId = id;    
+    }
+
     public void refreshTable() {
         if (database != null) {
-            ArrayList<ArrayList<String>> gradesData = StudentModel.getAllInfos(database); 
+            ArrayList<ArrayList<String>> gradesData = GradeModel.getStudentGrades(userId, database); 
             if (gradesData != null) {
                 this.allGradesData = gradesData; 
                 updateDisplay(allGradesData);
