@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
+//import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
@@ -61,10 +61,21 @@ class LoginTest {
 
     @Test
     public void checkPasswordTest(FxRobot robot){
-        Boolean empty = this.loginController.checkPassword("", "$2a$12$qL9fZrjCqoDdCCipQ0JUvOWI9tjCFTaruxAfqEgA0hftyKhBwXV0O");
-        Boolean fits = this.loginController.checkPassword("#GeeksForGeeks123@", "$2a$12$qL9fZrjCqoDdCCipQ0JUvOWI9tjCFTaruxAfqEgA0hftyKhBwXV0O");
-        assertFalse(empty);
-        assertTrue(fits);
+        try{
+            Method checkPassword = LoginController.class.getDeclaredMethod("checkPassword", String.class,String.class);
+
+            // Make the private method accessible
+            checkPassword.setAccessible(true);
+
+            // Invoke the private method
+            Boolean empty = (Boolean) checkPassword.invoke(this.loginController, "", "$2a$12$qL9fZrjCqoDdCCipQ0JUvOWI9tjCFTaruxAfqEgA0hftyKhBwXV0O");
+            Boolean fits = (Boolean) checkPassword.invoke(this.loginController, "#GeeksForGeeks123@", "$2a$12$qL9fZrjCqoDdCCipQ0JUvOWI9tjCFTaruxAfqEgA0hftyKhBwXV0O");
+            assertFalse(empty);
+            assertTrue(fits);
+
+        } catch (Exception e) {
+           fail("Reflection failed: " + e.getMessage());
+        }
     }
 
     @Test
