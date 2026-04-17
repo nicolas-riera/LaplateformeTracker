@@ -96,6 +96,7 @@ public class StudentMenuFXMLController implements Initializable {
 
     public void pullStudentInfos(){
         this.studentInfos = StudentModel.getInfos(userId, database);
+        
         userEmailLabel.setText(studentInfos.get(0).get(2));
         userFirstNameLabel.setText(studentInfos.get(0).get(4));
         userLastNameLabel.setText(studentInfos.get(0).get(5));
@@ -105,6 +106,13 @@ public class StudentMenuFXMLController implements Initializable {
         userDegreeLabel.setText(studentInfos.get(0).get(10));
         ArrayList<ArrayList<String>> managerInfos = ManagerModel.getInfos(Integer.parseInt(studentInfos.get(0).get(1)), database);
         userManagerLabel.setText(String.format("%s %s", managerInfos.get(0).get(3), managerInfos.get(0).get(4)));
+
+        String pwd = studentInfos.get(0).get(3);
+        if (pwd.isEmpty() || pwd.equalsIgnoreCase("null") || pwd.equals("\\N")) {
+            changePasswordButton.setText("Créer un compte");
+        } else {
+            changePasswordButton.setText("Changer le mot de passe");
+        }
     }
 
     public void refreshTable() {

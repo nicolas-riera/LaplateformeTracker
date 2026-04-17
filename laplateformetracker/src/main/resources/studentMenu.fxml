@@ -122,6 +122,12 @@
             <TableColumn fx:id="colSkill" minWidth="0.0" prefWidth="209.71432495117188" style="-fx-alignment: CENTER;" text="Matière" />
             <TableColumn fx:id="colGrade" prefWidth="145.71429443359375" style="-fx-alignment: CENTER;" text="Note" />
         </columns>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
       </TableView>
   </children>
 </VBox>

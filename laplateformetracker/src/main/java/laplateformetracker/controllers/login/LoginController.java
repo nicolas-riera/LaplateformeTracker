@@ -117,7 +117,7 @@ public class LoginController {
             }
         } else if (student_id != -1) {
             ArrayList<ArrayList<String>> user_infos = StudentModel.getInfos(student_id, database);
-            if (checkPassword(password, user_infos.get(0).get(2)) || true) {
+            if (checkPassword(password, user_infos.get(0).get(3))) {
                 this.instantiateStudentMenu(this.instantiateUser(database, student_id, user_infos, false));
             } else {
                 alert.setAlertType(AlertType.WARNING);
