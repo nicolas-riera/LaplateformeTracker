@@ -39,6 +39,7 @@ public class StudentMenuController {
             this.setFXMLControllerOnDeleteStudentCallback();
             this.setFXMLControllerOnChangePasswordCallback();
             this.setFXMLControllerOnAddGradeCallback();
+            this.setFXMLControllerOnGradeSelectedCallback();
             this.setFXMLControllerOnLogoutCallback();
             this.setFXMLControllerOnReturnCallback();
             this.setFXMLControllerOnQuitCallback();
@@ -153,6 +154,30 @@ public class StudentMenuController {
         });
     }
 
+    private void setFXMLControllerOnGradeSelectedCallback(){
+        this.studentMenuView.getFxmlController().setOnGradeSelectedCallback(() -> {
+            ArrayList<String> selectedItem = this.studentMenuView.getFxmlController().getTableGrade().getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Suppression de la note");
+            alert.setHeaderText("Voulez-vous supprimer cette note?");
+            alert.setContentText(String.format("%s en %s", selectedItem.get(4),selectedItem.get(3)));
+            alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+            java.util.Optional<ButtonType> result = alert.showAndWait();
+            
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                GradeModel.delete(Integer.parseInt(selectedItem.get(0)), user.getDatabase());
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Succès");
+                    alert.setHeaderText("Note supprimée.");
+                    alert.setContentText("La note a bien été supprimée.");
+                    alert.showAndWait();
+                    this.studentMenuView.getFxmlController().refreshTable();
+            }
+        });
+
+    }
+
     private void setFXMLControllerOnLogoutCallback(){
         this.studentMenuView.getFxmlController().setOnLogOutCallback(() -> {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -194,8 +219,6 @@ public class StudentMenuController {
             }
         });
     }
-
-
 
     private void setFXMLControllerOnChangePasswordCallback(){
         this.studentMenuView.getFxmlController().setOnChangePasswordCallback(() -> {

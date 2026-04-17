@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseButton;
 import laplateformetracker.models.DataBase;
 import laplateformetracker.models.GradeModel;
 import laplateformetracker.models.ManagerModel;
@@ -50,6 +51,7 @@ public class StudentMenuFXMLController implements Initializable {
     private Runnable onDeleteStudentCallback;
     private Runnable onAddGradeCallback;
     private Runnable onChangePasswordCallback;
+    private Runnable onGradeSelectedCallback;
     private Runnable onLogOutCallback;
     private Runnable onQuitCallback;
     private Runnable onReturnCallback;
@@ -205,6 +207,28 @@ public class StudentMenuFXMLController implements Initializable {
         if (onReturnCallback != null){
             onReturnCallback.run();
         }
+    }
+
+    public TableView<ArrayList<String>> getTableGrade(){
+        return tableGrade;
+    }
+
+    public void handleOnGradeSelectedAction(){
+        if(onGradeSelectedCallback != null){
+            onGradeSelectedCallback.run();
+        }
+    }
+
+    public void setOnGradeSelectedCallback(Runnable callback){
+        this.onGradeSelectedCallback = callback;
+    }
+
+    public void setOnGradeRightClick(){
+        tableGrade.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {
+                this.handleOnGradeSelectedAction();
+            }
+        });
     }
 
     @Override
