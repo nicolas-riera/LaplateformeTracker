@@ -14,6 +14,7 @@ import laplateformetracker.views.StudentMenuView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
 import laplateformetracker.views.popup.ModifyStudentPopupView;
 
+@SuppressWarnings("unused")
 public class StudentMenuController {
     private Stage stage;
     private User user;
