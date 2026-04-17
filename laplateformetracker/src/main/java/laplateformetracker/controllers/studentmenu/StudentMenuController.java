@@ -1,5 +1,7 @@
 package laplateformetracker.controllers.studentmenu;
 
+import java.util.ArrayList;
+
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -14,7 +16,7 @@ import laplateformetracker.views.StudentMenuView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
 import laplateformetracker.views.popup.ModifyStudentPopupView;
 
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class StudentMenuController {
     private Stage stage;
     private User user;
@@ -106,7 +108,24 @@ public class StudentMenuController {
 
     private void setFXMLControllerOnDeleteStudentCallback(){
         this.studentMenuView.getFxmlController().setOnDeleteStudentCallback(() -> {
-             System.out.println("Delete student");
+            ArrayList<ArrayList<String>> studentInfos = StudentModel.getInfos(studentId, user.getDatabase());
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Suppression de l'étudiant");
+            alert.setHeaderText(String.format("Vous êtes sur le point de supprimer %s %s.", studentInfos.get(0).get(4), studentInfos.get(0).get(5)));
+            alert.setContentText("Êtes-vous sûr?");
+
+            alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+            java.util.Optional<ButtonType> result = alert.showAndWait();
+            
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                StudentModel.update(studentId, "is_deleted", true, user.getDatabase());
+                try{
+                    instantiateMainMenu(this.user);
+                }catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
     }
 
