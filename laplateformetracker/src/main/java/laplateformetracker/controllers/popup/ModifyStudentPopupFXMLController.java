@@ -47,7 +47,7 @@ public class ModifyStudentPopupFXMLController implements Initializable{
     @FXML
     private Button modifyButton;
 
-    private Consumer<ArrayList<String>> onModifyButtonCallback;
+    private Consumer<ArrayList<Object>> onModifyButtonCallback;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -75,7 +75,7 @@ public class ModifyStudentPopupFXMLController implements Initializable{
         phoneField.setPromptText(studentInfos.get(0).get(8));
     }
 
-    public void setOnModifyButtonCallback(Consumer<ArrayList<String>> callback){
+    public void setOnModifyButtonCallback(Consumer<ArrayList<Object>> callback){
         this.onModifyButtonCallback = callback;
     }
 
@@ -102,11 +102,11 @@ public class ModifyStudentPopupFXMLController implements Initializable{
             }
 
             if (errorMessage.isEmpty()) {
-                ArrayList<String> infoList = new ArrayList<>();
+                ArrayList<Object> infoList = new ArrayList<>();
                 infoList.add(lastName);
                 infoList.add(firstName);
                 if (birthDate != null){
-                    infoList.add(birthDate.toString());
+                    infoList.add(birthDate);
                 } else {
                     infoList.add("");
                 }

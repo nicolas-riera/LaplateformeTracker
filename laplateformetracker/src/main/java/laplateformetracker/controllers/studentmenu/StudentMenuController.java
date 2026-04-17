@@ -63,7 +63,7 @@ public class StudentMenuController {
                     String column;
                     for (int i = 0; i < infoList.size(); i++){
                         column = "";
-                        if ( !infoList.get(i).isEmpty() || infoList.get(i) == null ){
+                        if ( !infoList.get(i).toString().isEmpty() || infoList.get(i) == null ){
                             switch (i) {
                                 case 0:
                                     column = "last_name";
@@ -91,6 +91,7 @@ public class StudentMenuController {
                                     break;
                             }
                             if (!column.isEmpty()){
+                                System.out.println(infoList.get(i).getClass());
                                 StudentModel.update(studentId, column, infoList.get(i), user.getDatabase());
                             }
                         };
