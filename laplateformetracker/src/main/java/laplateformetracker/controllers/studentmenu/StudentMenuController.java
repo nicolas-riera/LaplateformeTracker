@@ -35,6 +35,7 @@ public class StudentMenuController {
             this.setFXMLControllerOnChangePasswordCallback();
             this.setFXMLControllerOnLogoutCallback();
             this.setFXMLControllerOnReturnCallback();
+            this.setFXMLControllerOnQuitCallback();
         }
     }
 
