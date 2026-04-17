@@ -53,7 +53,7 @@ public class StudentMenuController {
         this.studentMenuView.getFxmlController().setOnModifyStudentCallback(() -> {
             try {
                 ModifyStudentPopupView modifyStudentPopupView = new ModifyStudentPopupView(stage);
-                modifyStudentPopupView.getFxmlController().pullStudentInfos(studentId,user.getDatabase());
+                modifyStudentPopupView.getFxmlController().pullStudentInfos(studentId, user.getDatabase());
                 modifyStudentPopupView.getFxmlController().setOnModifyButtonCallback((infoList) -> {
                     String column;
                     for (int i = 0; i < infoList.size(); i++){
@@ -152,21 +152,20 @@ public class StudentMenuController {
     }
 
     private void setFXMLControllerOnChangePasswordCallback(){
-        this.studentMenuView.getFxmlController().setOnChangePasswordCallback(() -> {
-            Integer manager_id = this.user.getId();
-            
-            if (manager_id != -1) {
+        this.studentMenuView.getFxmlController().setOnChangePasswordCallback(() -> {            
+            if (studentId != -1) {
                 
                 try {
                     ChangePasswordPopupView changePasswordPopupView = new ChangePasswordPopupView(this.stage);
                     changePasswordPopupView.getFxmlController().setOnConfirmButtonCallback((newPassword) -> {
-                        ManagerModel.update(manager_id, "password_hash", this.hashPassword(newPassword), user.getDatabase());
-                        String updated_db_password = String.format(ManagerModel.getInfos(manager_id, user.getDatabase()).get(0).get(2));
+                        StudentModel.update(studentId, "password_hash", this.hashPassword(newPassword), user.getDatabase());
+                        String updated_db_password = String.format(StudentModel.getInfos(studentId, user.getDatabase()).get(0).get(2));
                         
                         if (!(updated_db_password.equals("null") || updated_db_password.equals("\\N"))) {
                             Alert alert = new Alert(AlertType.INFORMATION);
                             alert.setContentText("Mot de passe validé et enregistré.");
                             alert.show();
+                            studentMenuView.getFxmlController().pullStudentInfos();
                         }
                         changePasswordPopupView.close();
                     });
