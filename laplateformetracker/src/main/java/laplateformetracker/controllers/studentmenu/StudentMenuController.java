@@ -11,14 +11,13 @@ import laplateformetracker.User;
 import laplateformetracker.controllers.login.LoginController;
 import laplateformetracker.controllers.mainMenu.MainMenuController;
 import laplateformetracker.models.GradeModel;
-import laplateformetracker.models.ManagerModel;
 import laplateformetracker.models.StudentModel;
 import laplateformetracker.views.StudentMenuView;
 import laplateformetracker.views.popup.AddGradePopupView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
 import laplateformetracker.views.popup.ModifyStudentPopupView;
 
-//@SuppressWarnings("unused")
+@SuppressWarnings("unused")
 public class StudentMenuController {
     private Stage stage;
     private User user;
