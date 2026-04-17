@@ -55,6 +55,8 @@
             <MenuItem fx:id="modifyStudentButton" mnemonicParsing="false" onAction="#handleModifyStudentAction" text="Modifier étudiant" />
                   <MenuItem fx:id="deleteStudentButton" mnemonicParsing="false" onAction="#handleDeleteStudentAction" text="Supprimer étudiant" />
             <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="addGradeButton" mnemonicParsing="false" onAction="#handleAddGradeAction" text="Ajouter note" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="logOutButton" mnemonicParsing="false" onAction="#handleLogOutAction" text="Se déconnecter" />
             <MenuItem fx:id="quitButton" mnemonicParsing="false" onAction="#handleQuitAction" text="Quitter" />
           </items>

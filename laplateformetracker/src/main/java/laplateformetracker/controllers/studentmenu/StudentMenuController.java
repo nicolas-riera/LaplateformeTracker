@@ -1,5 +1,7 @@
 package laplateformetracker.controllers.studentmenu;
 
+import java.util.ArrayList;
+
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -8,13 +10,15 @@ import javafx.stage.Stage;
 import laplateformetracker.User;
 import laplateformetracker.controllers.login.LoginController;
 import laplateformetracker.controllers.mainMenu.MainMenuController;
+import laplateformetracker.models.GradeModel;
 import laplateformetracker.models.ManagerModel;
 import laplateformetracker.models.StudentModel;
 import laplateformetracker.views.StudentMenuView;
+import laplateformetracker.views.popup.AddGradePopupView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
 import laplateformetracker.views.popup.ModifyStudentPopupView;
 
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class StudentMenuController {
     private Stage stage;
     private User user;
@@ -34,6 +38,7 @@ public class StudentMenuController {
             this.setFXMLControllerOnModifyStudentCallback();
             this.setFXMLControllerOnDeleteStudentCallback();
             this.setFXMLControllerOnChangePasswordCallback();
+            this.setFXMLControllerOnAddGradeCallback();
             this.setFXMLControllerOnLogoutCallback();
             this.setFXMLControllerOnReturnCallback();
             this.setFXMLControllerOnQuitCallback();
@@ -58,7 +63,7 @@ public class StudentMenuController {
                     String column;
                     for (int i = 0; i < infoList.size(); i++){
                         column = "";
-                        if ( !infoList.get(i).isEmpty() || infoList.get(i) == null ){
+                        if ( !infoList.get(i).toString().isEmpty() || infoList.get(i) == null ){
                             switch (i) {
                                 case 0:
                                     column = "last_name";
@@ -86,6 +91,7 @@ public class StudentMenuController {
                                     break;
                             }
                             if (!column.isEmpty()){
+                                System.out.println(infoList.get(i).getClass());
                                 StudentModel.update(studentId, column, infoList.get(i), user.getDatabase());
                             }
                         };
@@ -106,7 +112,44 @@ public class StudentMenuController {
 
     private void setFXMLControllerOnDeleteStudentCallback(){
         this.studentMenuView.getFxmlController().setOnDeleteStudentCallback(() -> {
-             System.out.println("Delete student");
+            ArrayList<ArrayList<String>> studentInfos = StudentModel.getInfos(studentId, user.getDatabase());
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Suppression de l'étudiant");
+            alert.setHeaderText(String.format("Vous êtes sur le point de supprimer %s %s.", studentInfos.get(0).get(4), studentInfos.get(0).get(5)));
+            alert.setContentText("Êtes-vous sûr?");
+
+            alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+            java.util.Optional<ButtonType> result = alert.showAndWait();
+            
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                StudentModel.update(studentId, "is_deleted", true, user.getDatabase());
+                try{
+                    instantiateMainMenu(this.user);
+                }catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void setFXMLControllerOnAddGradeCallback(){
+        this.studentMenuView.getFxmlController().setOnAddGradeCallback(() -> {
+            try {
+                AddGradePopupView addGradePopupView = new AddGradePopupView(stage);
+                addGradePopupView.getFxmlController().setOnConfirmButtonCallback((skill, grade) -> {
+                    GradeModel.create(studentId, skill, grade, user.getDatabase());
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Succès");
+                    alert.setHeaderText(null);
+                    alert.setContentText("La note a bien été ajoutée.");
+                    alert.showAndWait();
+                    this.studentMenuView.getFxmlController().refreshTable();
+                    addGradePopupView.close();
+                });
+            }  catch (java.io.IOException e) {
+                e.printStackTrace(); 
+            }
         });
     }
 
@@ -128,6 +171,7 @@ public class StudentMenuController {
                     }
                     new LoginController(this.stage);
                 } catch (java.io.IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -150,6 +194,8 @@ public class StudentMenuController {
             }
         });
     }
+
+
 
     private void setFXMLControllerOnChangePasswordCallback(){
         this.studentMenuView.getFxmlController().setOnChangePasswordCallback(() -> {            

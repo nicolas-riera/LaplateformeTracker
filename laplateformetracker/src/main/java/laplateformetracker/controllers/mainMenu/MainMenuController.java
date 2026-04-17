@@ -48,6 +48,7 @@ public class MainMenuController {
                         changePasswordPopupView.close();
                     });
                 } catch (java.io.IOException e) {
+                    e.printStackTrace();
                 }  
             }
         });
@@ -69,6 +70,7 @@ public class MainMenuController {
                     }
                     new LoginController(this.stage);
                 } catch (java.io.IOException e) {
+                    e.printStackTrace();
                 }
             }
         });

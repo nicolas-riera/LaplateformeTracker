@@ -102,7 +102,7 @@ public class LoginController {
                         try {
                             this.instantiateMainMenu(this.instantiateUser(database, manager_id, user_infos, true));
                         } catch (java.io.IOException e) {
-                        
+                            e.printStackTrace();
                         }
                     }
                     changePasswordPopupView.close();
