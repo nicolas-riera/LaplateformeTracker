@@ -10,9 +10,11 @@ import javafx.stage.Stage;
 import laplateformetracker.User;
 import laplateformetracker.controllers.login.LoginController;
 import laplateformetracker.controllers.mainMenu.MainMenuController;
+import laplateformetracker.models.GradeModel;
 import laplateformetracker.models.ManagerModel;
 import laplateformetracker.models.StudentModel;
 import laplateformetracker.views.StudentMenuView;
+import laplateformetracker.views.popup.AddGradePopupView;
 import laplateformetracker.views.popup.ChangePasswordPopupView;
 import laplateformetracker.views.popup.ModifyStudentPopupView;
 
@@ -36,6 +38,7 @@ public class StudentMenuController {
             this.setFXMLControllerOnModifyStudentCallback();
             this.setFXMLControllerOnDeleteStudentCallback();
             this.setFXMLControllerOnChangePasswordCallback();
+            this.setFXMLControllerOnAddGradeCallback();
             this.setFXMLControllerOnLogoutCallback();
             this.setFXMLControllerOnReturnCallback();
             this.setFXMLControllerOnQuitCallback();
@@ -129,6 +132,26 @@ public class StudentMenuController {
         });
     }
 
+    private void setFXMLControllerOnAddGradeCallback(){
+        this.studentMenuView.getFxmlController().setOnAddGradeCallback(() -> {
+            try {
+                AddGradePopupView addGradePopupView = new AddGradePopupView(stage);
+                addGradePopupView.getFxmlController().setOnConfirmButtonCallback((skill, grade) -> {
+                    GradeModel.create(studentId, skill, grade, user.getDatabase());
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Succès");
+                    alert.setHeaderText(null);
+                    alert.setContentText("La note a bien été ajoutée.");
+                    alert.showAndWait();
+                    this.studentMenuView.getFxmlController().refreshTable();
+                    addGradePopupView.close();
+                });
+            }  catch (java.io.IOException e) {
+                e.printStackTrace(); 
+            }
+        });
+    }
+
     private void setFXMLControllerOnLogoutCallback(){
         this.studentMenuView.getFxmlController().setOnLogOutCallback(() -> {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -169,6 +192,8 @@ public class StudentMenuController {
             }
         });
     }
+
+
 
     private void setFXMLControllerOnChangePasswordCallback(){
         this.studentMenuView.getFxmlController().setOnChangePasswordCallback(() -> {
