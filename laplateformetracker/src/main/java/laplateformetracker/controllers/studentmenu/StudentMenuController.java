@@ -170,6 +170,7 @@ public class StudentMenuController {
                     }
                     new LoginController(this.stage);
                 } catch (java.io.IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
