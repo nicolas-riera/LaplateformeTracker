@@ -32,6 +32,8 @@ public class StudentMenuFXMLController implements Initializable {
     @FXML
     private MenuItem deleteStudentButton;
     @FXML
+    private MenuItem addGradeButton;
+    @FXML
     private MenuItem logOutButton;
     @FXML
     private MenuItem quitButton;
@@ -46,6 +48,7 @@ public class StudentMenuFXMLController implements Initializable {
     // Callbacks
     private Runnable onModifyStudentCallback;
     private Runnable onDeleteStudentCallback;
+    private Runnable onAddGradeCallback;
     private Runnable onChangePasswordCallback;
     private Runnable onLogOutCallback;
     private Runnable onQuitCallback;
@@ -141,6 +144,19 @@ public class StudentMenuFXMLController implements Initializable {
     public void handleDeleteStudentAction() {
         if (onDeleteStudentCallback != null) {
             onDeleteStudentCallback.run();
+        }
+    }
+
+    public MenuItem getAddGradeButton(){
+        return addGradeButton;
+    }
+    public void setOnAddGradeCallback(Runnable callback){
+        this.onAddGradeCallback = callback;
+    }
+    @FXML
+    public void handleAddGradeAction(){
+        if (onAddGradeCallback != null) {
+            onAddGradeCallback.run();
         }
     }
 
