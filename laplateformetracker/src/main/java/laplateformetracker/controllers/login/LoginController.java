@@ -46,7 +46,7 @@ public class LoginController {
          return BCrypt.withDefaults().hashToString(12, password.toCharArray());
     }
 
-    public Boolean checkPassword(String password, String stored_password) {
+    private Boolean checkPassword(String password, String stored_password) {
         if (password.isEmpty()) {
             return false;
         } else {
@@ -83,7 +83,7 @@ public class LoginController {
         this.studentMenuController.initController();
     }
 
-    public void loginUser(String email, String password) throws java.io.IOException {
+    private void loginUser(String email, String password) throws java.io.IOException {
         Integer manager_id = ManagerModel.getID(email, database);
         Integer student_id = StudentModel.getID(email, database);
         Alert alert = new Alert(AlertType.NONE);
