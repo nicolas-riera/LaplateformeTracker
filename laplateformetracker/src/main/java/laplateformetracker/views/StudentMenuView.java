@@ -24,7 +24,7 @@ public class StudentMenuView {
             this.studentMenuFXMLController.getDeleteStudentButton().setDisable(true);
             this.studentMenuFXMLController.getModifyStudentButton().setDisable(true);
             this.studentMenuFXMLController.getReturnButton().setDisable(true);
-            
+            this.studentMenuFXMLController.getAddGradeButton().setDisable(true);
         }else{
             this.studentMenuFXMLController.setOnGradeRightClick();
         }

@@ -233,7 +233,7 @@ public class StudentMenuFXMLController implements Initializable {
 
     public void setOnGradeRightClick(){
         tableGrade.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
+            if (event.getButton() == MouseButton.SECONDARY && tableGrade.getSelectionModel().getSelectedItem() != null) {
                 this.handleOnGradeSelectedAction();
             }
         });
