@@ -338,42 +338,11 @@ public class MainMenuFXMLController implements Initializable {
         colDegree.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(10)));
 
         colMean.setCellValueFactory(data -> {
-            String studentId = data.getValue().get(0);
-            
-            if (database == null) {
-                return new SimpleStringProperty("...");
-            }
-            
-            String mean = calculateAverage(studentId);
-            return new SimpleStringProperty(mean);
+            return new SimpleStringProperty(data.getValue().get(11)); 
         });
 
         colManager.setCellValueFactory(data -> {
-            String managerIDStr = data.getValue().get(1);
-
-            if (database == null || managerIDStr == null || managerIDStr.equals("null") || managerIDStr.isEmpty()) {
-                return new SimpleStringProperty("Inconnu");
-            }
-
-            try {
-                int managerID = Integer.parseInt(managerIDStr);
-                ArrayList<ArrayList<String>> managerData = ManagerModel.getInfos(managerID, database);
-
-                if (managerData == null || managerData.isEmpty()) {
-                    return new SimpleStringProperty("Inconnu");
-                }
-
-                ArrayList<String> firstRow = managerData.get(0);
-                String firstname = firstRow.get(3);
-                String lastname = firstRow.get(4);
-                
-                return new SimpleStringProperty(lastname + " " + firstname);
-
-            } catch (NumberFormatException e) {
-                return new SimpleStringProperty("ID Invalide");
-            } catch (Exception e) {
-                return new SimpleStringProperty("Erreur");
-            }
+            return new SimpleStringProperty(data.getValue().get(12));
         });
 
         colPhone.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().get(8)));
@@ -419,6 +388,22 @@ public class MainMenuFXMLController implements Initializable {
         }
     }
 
+    private String fetchManagerName(String managerIDStr) {
+        if (managerIDStr == null || managerIDStr.equals("null") || managerIDStr.isEmpty()) {
+            return "Inconnu";
+        }
+        try {
+            int manager_id = Integer.parseInt(managerIDStr);
+            ArrayList<ArrayList<String>> manager_infos = ManagerModel.getInfos(manager_id, database);
+            if (manager_infos != null && !manager_infos.isEmpty()) {
+                return manager_infos.get(0).get(4) + " " + manager_infos.get(0).get(3);
+            }
+        } catch (Exception e) {
+            return "Erreur";
+        }
+        return "Inconnu";
+    }
+
     public void setDataBase(DataBase db) {
         this.database = db;         
         refreshTable();
@@ -426,9 +411,22 @@ public class MainMenuFXMLController implements Initializable {
 
     public void refreshTable() {
         if (database != null) {
-            ArrayList<ArrayList<String>> studentData = StudentModel.getAllInfos(database); 
+            ArrayList<ArrayList<String>> studentData = StudentModel.getAllInfos(database);
+            
             if (studentData != null) {
-                this.allStudentsData = studentData; 
+                for (ArrayList<String> row : studentData) {
+
+                    String studentId = row.get(0);
+                    String managerId = row.get(1);
+                    
+                    String mean = calculateAverage(studentId);
+                    String managerName = fetchManagerName(managerId); 
+                    
+                    row.add(mean);        
+                    row.add(managerName);  
+                }
+                
+                this.allStudentsData = studentData;
                 updateDisplay(allStudentsData);
                 updateStatistics();
             }
